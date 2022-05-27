@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
+import 'package:in_market_shop_app/screens/login.dart';
 import 'package:in_market_shop_app/screens/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -54,11 +55,11 @@ class SplashController extends StatelessWidget {
         return const SplashScreen();
       case Status.unauthenticated:
       case Status.authenticating:
-        return const SplashScreen();
+        return const LoginScreen();
       case Status.authenticated:
-        return const SplashScreen();
+        return const LoginScreen();
       default:
-        return const SplashScreen();
+        return const LoginScreen();
     }
   }
 }

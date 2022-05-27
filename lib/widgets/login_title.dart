@@ -12,7 +12,7 @@ class LoginTitle extends StatelessWidget {
           'InMarket',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 34,
+            fontSize: 64,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSans-Bold',
             letterSpacing: 1,
@@ -22,7 +22,7 @@ class LoginTitle extends StatelessWidget {
           '- 店舗用 -',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18.0,
+            fontSize: 32,
           ),
         ),
       ],

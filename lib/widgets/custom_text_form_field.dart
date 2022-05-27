@@ -25,7 +25,7 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: 1,
       style: const TextStyle(
         color: Colors.black54,
-        fontSize: 14,
+        fontSize: 20,
       ),
       cursorColor: Colors.white,
       decoration: InputDecoration(
@@ -34,17 +34,17 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: iconData != null
             ? Icon(
                 iconData,
-                size: 18,
+                size: 26,
                 color: Colors.black54,
               )
             : null,
         filled: true,
         enabledBorder: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
         labelStyle: const TextStyle(color: Colors.black54),

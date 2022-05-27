@@ -32,5 +32,5 @@ const BoxDecoration loginDecoration = BoxDecoration(
 
 const TextStyle loginMessageStyle = TextStyle(
   color: Colors.white,
-  fontSize: 14.0,
+  fontSize: 20.0,
 );
