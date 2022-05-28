@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.red.shade200,
+    scaffoldBackgroundColor: Colors.blue.shade200,
     fontFamily: 'SourceHanSans-Regular',
     appBarTheme: const AppBarTheme(
       color: Colors.white,
@@ -32,5 +32,5 @@ const BoxDecoration loginDecoration = BoxDecoration(
 
 const TextStyle loginMessageStyle = TextStyle(
   color: Colors.white,
-  fontSize: 20.0,
+  fontSize: 18.0,
 );

@@ -4,22 +4,22 @@ import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/screens/home.dart';
-import 'package:in_market_shop_app/screens/regist.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
+import 'package:in_market_shop_app/widgets/icon_label.dart';
 import 'package:in_market_shop_app/widgets/link_button.dart';
 import 'package:in_market_shop_app/widgets/login_title.dart';
 import 'package:in_market_shop_app/widgets/round_lg_button.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegistScreen extends StatefulWidget {
+  const RegistScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegistScreen> createState() => _RegistScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistScreenState extends State<RegistScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -43,10 +43,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   Column(
                     children: [
                       const Text(
-                        '既に登録済みの方はログインしてください',
+                        '登録がお済みでない方は新規登録してください',
                         style: loginMessageStyle,
                       ),
                       const SizedBox(height: 16),
+                      const IconLabel(
+                        iconData: Icons.key,
+                        labelText: 'ログイン情報',
+                      ),
+                      const SizedBox(height: 8),
                       CustomTextFormField(
                         controller: authProvider.emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -62,12 +67,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         iconData: Icons.lock,
                       ),
                       const SizedBox(height: 16),
+                      CustomTextFormField(
+                        controller: authProvider.rePasswordController,
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        labelText: 'パスワードの再入力',
+                        iconData: Icons.lock_outline,
+                      ),
+                      const SizedBox(height: 32),
+                      const IconLabel(
+                        iconData: Icons.account_circle,
+                        labelText: 'アカウント情報',
+                      ),
+                      const SizedBox(height: 8),
+                      CustomTextFormField(
+                        controller: authProvider.nameController,
+                        obscureText: true,
+                        keyboardType: TextInputType.name,
+                        labelText: 'お名前',
+                        iconData: Icons.person,
+                      ),
+                      const SizedBox(height: 16),
                       RoundLgButton(
-                        labelText: 'ログイン',
+                        labelText: '新規登録',
                         labelColor: Colors.black54,
                         backgroundColor: Colors.white,
                         onPressed: () async {
-                          String? errorText = await authProvider.login();
+                          String? errorText = await authProvider.regist();
                           if (errorText != null) {
                             showDialog(
                               context: context,
@@ -84,8 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 60),
                       LinkButton(
-                        labelText: '新規登録の場合はココをタップ！',
-                        onTap: () => nextScreen(context, const RegistScreen()),
+                        labelText: 'ログインの場合はココをタップ！',
+                        onTap: () => Navigator.pop(context),
                       ),
                       const SizedBox(height: 60),
                     ],

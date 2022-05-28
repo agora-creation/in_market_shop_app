@@ -18,7 +18,7 @@ class LinkButton extends StatelessWidget {
         labelText ?? '',
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 16,
+          fontSize: 20,
           decoration: TextDecoration.underline,
         ),
       ),

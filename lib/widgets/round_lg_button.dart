@@ -34,7 +34,7 @@ class RoundLgButton extends StatelessWidget {
           labelText ?? '',
           style: TextStyle(
             color: labelColor,
-            fontSize: 16,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSans-Bold',
           ),

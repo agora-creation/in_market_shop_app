@@ -21,7 +21,7 @@ class ErrorDialog extends StatelessWidget {
             child: Icon(
               Icons.error,
               color: Colors.red,
-              size: 32,
+              size: 42,
             ),
           ),
           const SizedBox(height: 16),
@@ -29,7 +29,7 @@ class ErrorDialog extends StatelessWidget {
             message ?? '',
             style: const TextStyle(
               color: Colors.black54,
-              fontSize: 16,
+              fontSize: 20,
             ),
           ),
           const SizedBox(height: 16),

@@ -14,13 +14,13 @@ class IconLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(iconData, color: Colors.white, size: 16),
-        const SizedBox(width: 8.0),
+        Icon(iconData, color: Colors.white, size: 20),
+        const SizedBox(width: 8),
         Text(
           labelText ?? '',
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 14,
+            fontSize: 18,
           ),
         ),
       ],
