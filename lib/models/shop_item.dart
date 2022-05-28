@@ -25,7 +25,14 @@ class ShopItem {
 
   ShopItem.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     _id = snapshot.data()!['id'] ?? '';
-
+    _shopId = snapshot.data()!['shopId'] ?? '';
+    _number = snapshot.data()!['number'] ?? '';
+    _name = snapshot.data()!['name'] ?? '';
+    _price = snapshot.data()!['price'] ?? 0;
+    _unit = snapshot.data()!['unit'] ?? '';
+    _imageUrl = snapshot.data()!['imageUrl'] ?? '';
+    _description = snapshot.data()!['description'] ?? '';
+    _open = snapshot.data()!['open'] ?? false;
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }
 }

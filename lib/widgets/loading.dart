@@ -8,7 +8,7 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SpinKitPouringHourGlass(
       color: Colors.white,
-      size: 80,
+      size: 64,
     );
   }
 }
