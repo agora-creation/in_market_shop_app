@@ -4,13 +4,17 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class DashboardCard extends StatelessWidget {
   final int crossAxisCellCount;
   final int mainAxisCellCount;
+  final IconData? iconData;
   final String? labelText;
+  final String? chipText;
   final Function()? onTap;
 
   const DashboardCard({
     this.crossAxisCellCount = 1,
     this.mainAxisCellCount = 1,
+    this.iconData,
     this.labelText,
+    this.chipText,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -25,15 +29,57 @@ class DashboardCard extends StatelessWidget {
         child: Card(
           color: Colors.white,
           elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.shopping_bag,
-                color: Colors.blue,
+              chipText != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Chip(
+                          backgroundColor: Colors.red.shade400,
+                          label: Text(
+                            chipText ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'SourceHanSans-Bold',
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      iconData,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
               ),
-              Text(labelText ?? ''),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: Text(
+                  labelText ?? '',
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'SourceHanSans-Bold',
+                  ),
+                ),
+              ),
             ],
           ),
         ),

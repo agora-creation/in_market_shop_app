@@ -36,34 +36,44 @@ class _HomeScreenState extends State<HomeScreen> {
           DashboardCard(
             crossAxisCellCount: 2,
             mainAxisCellCount: 2,
+            iconData: Icons.shopping_cart,
             labelText: '受注待ち',
+            chipText: '10',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.local_shipping,
             labelText: '配達待ち',
+            chipText: '2',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.history_edu,
             labelText: '受注履歴',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.add_shopping_cart,
             labelText: '新規注文',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.bar_chart,
             labelText: '集計',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
-            labelText: '顧客',
+            iconData: Icons.group,
+            labelText: '注文者',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.delivery_dining,
             labelText: '配達者',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
           DashboardCard(
+            iconData: Icons.inventory,
             labelText: '商品',
             onTap: () => overlayScreen(context, const SettingScreen()),
           ),
