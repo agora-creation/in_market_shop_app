@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ShopItem {
+class ShopItemModel {
   String _id = '';
   String _shopId = '';
   String _number = '';
@@ -23,7 +23,7 @@ class ShopItem {
   bool get open => _open;
   DateTime get createdAt => _createdAt;
 
-  ShopItem.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  ShopItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     _id = snapshot.data()!['id'] ?? '';
     _shopId = snapshot.data()!['shopId'] ?? '';
     _number = snapshot.data()!['number'] ?? '';
