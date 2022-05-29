@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/services/shop_item.dart';
@@ -6,6 +9,7 @@ import 'package:in_market_shop_app/services/shop_item.dart';
 class ItemProvider with ChangeNotifier {
   ShopItemService itemService = ShopItemService();
 
+  File? imageFile;
   TextEditingController numberController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -20,6 +24,12 @@ class ItemProvider with ChangeNotifier {
     unitController.text = '';
     descriptionController.text = '';
     openController = false;
+  }
+
+  Future pickImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    final file = await imagePicker.pickImage(source: ImageSource.gallery);
+    imageFile = File(file!.path);
   }
 
   void openChange(bool value) {
