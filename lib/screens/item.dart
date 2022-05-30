@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/screens/item_add.dart';
+import 'package:in_market_shop_app/widgets/item_card.dart';
 
 class ItemScreen extends StatelessWidget {
   const ItemScreen({Key? key}) : super(key: key);
@@ -22,22 +23,18 @@ class ItemScreen extends StatelessWidget {
       ),
       body: GridView.builder(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 5,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
         ),
         itemCount: 100,
         itemBuilder: (_, index) {
-          return const Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Colors.black54,
-              ),
-            ),
-            color: Colors.white,
+          return ItemCard(
+            name: '商品　$index',
+            price: '¥ $index',
+            onTap: () {},
           );
         },
       ),
