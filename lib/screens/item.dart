@@ -20,7 +20,27 @@ class ItemScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('ありません')),
+      body: GridView.builder(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 5,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+        ),
+        itemCount: 100,
+        itemBuilder: (_, index) {
+          return const Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black54,
+              ),
+            ),
+            color: Colors.white,
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => nextScreen(context, const ItemAddScreen()),
         label: const Text('商品追加'),
