@@ -34,3 +34,10 @@ const TextStyle loginMessageStyle = TextStyle(
   color: Colors.white,
   fontSize: 18.0,
 );
+
+const SliverGridDelegate itemGridDelegate =
+    SliverGridDelegateWithFixedCrossAxisCount(
+  crossAxisCount: 5,
+  mainAxisSpacing: 16,
+  crossAxisSpacing: 16,
+);

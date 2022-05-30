@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_market_shop_app/models/shop.dart';
@@ -26,6 +27,15 @@ class ItemProvider with ChangeNotifier {
     openController = false;
   }
 
+  void setController(ShopItemModel item) {
+    numberController.text = item.number;
+    nameController.text = item.name;
+    priceController.text = item.price.toString();
+    unitController.text = item.unit;
+    descriptionController.text = item.description;
+    openController = item.open;
+  }
+
   Future pickImage() async {
     ImagePicker imagePicker = ImagePicker();
     final file = await imagePicker.pickImage(source: ImageSource.gallery);
@@ -44,12 +54,16 @@ class ItemProvider with ChangeNotifier {
     if (nameController.text.isEmpty) errorText = '商品名を入力してください。';
     try {
       String id = itemService.newId(shop?.id);
+      int price = 0;
+      if (priceController.text.isNotEmpty) {
+        price = int.parse(priceController.text.trim());
+      }
       itemService.create({
         'id': id,
         'shopId': shop?.id,
         'number': numberController.text.trim(),
         'name': nameController.text.trim(),
-        'price': int.parse(priceController.text.trim()),
+        'price': price,
         'unit': unitController.text.trim(),
         'imageUrl': '',
         'description': descriptionController.text,
@@ -68,11 +82,15 @@ class ItemProvider with ChangeNotifier {
     if (numberController.text.isEmpty) errorText = '商品番号を入力してください。';
     if (nameController.text.isEmpty) errorText = '商品名を入力してください。';
     try {
+      int price = 0;
+      if (priceController.text.isNotEmpty) {
+        price = int.parse(priceController.text.trim());
+      }
       itemService.update({
         'id': item?.id,
         'number': numberController.text.trim(),
         'name': nameController.text.trim(),
-        'price': int.parse(priceController.text.trim()),
+        'price': price,
         'unit': unitController.text.trim(),
         'description': descriptionController.text,
         'open': openController,
@@ -95,5 +113,16 @@ class ItemProvider with ChangeNotifier {
       errorText = '商品の削除に失敗しました。';
     }
     return errorText;
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({ShopModel? shop}) {
+    Stream<QuerySnapshot<Map<String, dynamic>>>? ret;
+    ret = FirebaseFirestore.instance
+        .collection('shop')
+        .doc(shop?.id ?? 'error')
+        .collection('item')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+    return ret;
   }
 }

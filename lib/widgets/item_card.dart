@@ -50,15 +50,17 @@ class ItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      price ?? '',
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SourceHanSans-Bold',
-                      ),
-                    ),
+                    price != null
+                        ? Text(
+                            price ?? '',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'SourceHanSans-Bold',
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
