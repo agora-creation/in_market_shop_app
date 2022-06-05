@@ -22,8 +22,9 @@ class ItemScreen extends StatelessWidget {
     List<ShopItemModel> items = [];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('商品一覧'),
@@ -52,8 +53,8 @@ class ItemScreen extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
             ),
             itemCount: items.length,
             itemBuilder: (_, index) {
@@ -78,7 +79,7 @@ class ItemScreen extends StatelessWidget {
         label: const Text('商品追加'),
         icon: const Icon(Icons.add),
         backgroundColor: Colors.blue,
-        elevation: 0,
+        elevation: 3,
       ),
     );
   }

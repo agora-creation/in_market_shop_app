@@ -1,20 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
-import 'package:in_market_shop_app/widgets/order_list.dart';
+import 'package:in_market_shop_app/screens/order1_detail.dart';
+import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
-class OrderHistoryScreen extends StatefulWidget {
-  const OrderHistoryScreen({Key? key}) : super(key: key);
+class Order1Screen extends StatefulWidget {
+  const Order1Screen({Key? key}) : super(key: key);
 
   @override
-  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+  State<Order1Screen> createState() => _Order1ScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+class _Order1ScreenState extends State<Order1Screen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -23,11 +25,12 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
     List<ShopOrderModel> orders = [];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('受注履歴'),
+        title: const Text('受注待ち'),
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
@@ -36,7 +39,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: orderProvider.streamOrders(shop: shop, status: 0),
+        stream: orderProvider.streamOrders(shop: shop, status: 1),
         builder: (context, snapshot) {
           orders.clear();
           if (snapshot.hasData) {
@@ -51,9 +54,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             itemCount: orders.length,
             itemBuilder: (_, index) {
               ShopOrderModel order = orders[index];
-              return OrderList(
+              return OrderCard(
                 order: order,
-                onTap: () {},
+                onTap: () =>
+                    nextScreen(context, Order1DetailScreen(order: order)),
               );
             },
           );

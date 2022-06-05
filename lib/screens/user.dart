@@ -22,8 +22,9 @@ class _UserScreenState extends State<UserScreen> {
     List<UserModel> users = [];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('注文者一覧'),
@@ -45,13 +46,26 @@ class _UserScreenState extends State<UserScreen> {
             }
           }
           if (users.isEmpty) return const Center(child: Text('注文者はいません'));
-          return ListView.builder(
+          return GridView.builder(
+            shrinkWrap: true,
             padding: const EdgeInsets.all(24),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+            ),
             itemCount: users.length,
             itemBuilder: (_, index) {
               UserModel user = users[index];
-              return ListTile(
-                title: Text(user.name),
+              return GestureDetector(
+                onTap: () {},
+                child: Card(
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(user.name),
+                  ),
+                ),
               );
             },
           );

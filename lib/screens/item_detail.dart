@@ -8,10 +8,8 @@ import 'package:provider/provider.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   final ShopItemModel item;
-  const ItemDetailScreen({
-    required this.item,
-    Key? key,
-  }) : super(key: key);
+
+  const ItemDetailScreen({required this.item, Key? key}) : super(key: key);
 
   @override
   State<ItemDetailScreen> createState() => _ItemDetailScreenState();

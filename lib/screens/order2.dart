@@ -4,17 +4,17 @@ import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
-import 'package:in_market_shop_app/widgets/order_list.dart';
+import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
-class OrderShippingScreen extends StatefulWidget {
-  const OrderShippingScreen({Key? key}) : super(key: key);
+class Order2Screen extends StatefulWidget {
+  const Order2Screen({Key? key}) : super(key: key);
 
   @override
-  State<OrderShippingScreen> createState() => _OrderShippingScreenState();
+  State<Order2Screen> createState() => _Order2ScreenState();
 }
 
-class _OrderShippingScreenState extends State<OrderShippingScreen> {
+class _Order2ScreenState extends State<Order2Screen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -23,8 +23,9 @@ class _OrderShippingScreenState extends State<OrderShippingScreen> {
     List<ShopOrderModel> orders = [];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('配達待ち'),
@@ -51,7 +52,7 @@ class _OrderShippingScreenState extends State<OrderShippingScreen> {
             itemCount: orders.length,
             itemBuilder: (_, index) {
               ShopOrderModel order = orders[index];
-              return OrderList(
+              return OrderCard(
                 order: order,
                 onTap: () {},
               );

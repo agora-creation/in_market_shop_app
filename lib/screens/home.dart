@@ -7,10 +7,10 @@ import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/delivery.dart';
 import 'package:in_market_shop_app/screens/item.dart';
+import 'package:in_market_shop_app/screens/order0.dart';
+import 'package:in_market_shop_app/screens/order1.dart';
+import 'package:in_market_shop_app/screens/order2.dart';
 import 'package:in_market_shop_app/screens/order_add.dart';
-import 'package:in_market_shop_app/screens/order_history.dart';
-import 'package:in_market_shop_app/screens/order_pending.dart';
-import 'package:in_market_shop_app/screens/order_shipping.dart';
 import 'package:in_market_shop_app/screens/setting.dart';
 import 'package:in_market_shop_app/screens/total.dart';
 import 'package:in_market_shop_app/screens/user.dart';
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 iconData: Icons.shopping_cart,
                 labelText: '受注待ち',
                 count: orders.length,
-                onTap: () => overlayScreen(context, const OrderPendingScreen()),
+                onTap: () => overlayScreen(context, const Order1Screen()),
               );
             },
           ),
@@ -79,15 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 iconData: Icons.local_shipping,
                 labelText: '配達待ち',
                 count: orders.length,
-                onTap: () =>
-                    overlayScreen(context, const OrderShippingScreen()),
+                onTap: () => overlayScreen(context, const Order2Screen()),
               );
             },
           ),
           DashboardCard(
             iconData: Icons.history_edu,
             labelText: '受注履歴',
-            onTap: () => overlayScreen(context, const OrderHistoryScreen()),
+            onTap: () => overlayScreen(context, const Order0Screen()),
           ),
           DashboardCard(
             iconData: Icons.add_shopping_cart,

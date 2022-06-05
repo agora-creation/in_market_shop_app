@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 
-class OrderList extends StatelessWidget {
+class OrderCard extends StatelessWidget {
   final ShopOrderModel order;
   final Function()? onTap;
 
-  const OrderList({
+  const OrderCard({
     required this.order,
     this.onTap,
     Key? key,
@@ -16,8 +15,8 @@ class OrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: kBottomBorder,
+      child: Card(
+        elevation: 3,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

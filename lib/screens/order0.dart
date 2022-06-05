@@ -4,17 +4,17 @@ import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
-import 'package:in_market_shop_app/widgets/order_list.dart';
+import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
-class OrderPendingScreen extends StatefulWidget {
-  const OrderPendingScreen({Key? key}) : super(key: key);
+class Order0Screen extends StatefulWidget {
+  const Order0Screen({Key? key}) : super(key: key);
 
   @override
-  State<OrderPendingScreen> createState() => _OrderPendingScreenState();
+  State<Order0Screen> createState() => _Order0ScreenState();
 }
 
-class _OrderPendingScreenState extends State<OrderPendingScreen> {
+class _Order0ScreenState extends State<Order0Screen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -23,11 +23,12 @@ class _OrderPendingScreenState extends State<OrderPendingScreen> {
     List<ShopOrderModel> orders = [];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('受注待ち'),
+        title: const Text('受注履歴'),
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
@@ -36,7 +37,7 @@ class _OrderPendingScreenState extends State<OrderPendingScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: orderProvider.streamOrders(shop: shop, status: 1),
+        stream: orderProvider.streamOrders(shop: shop, status: 0),
         builder: (context, snapshot) {
           orders.clear();
           if (snapshot.hasData) {
@@ -51,7 +52,7 @@ class _OrderPendingScreenState extends State<OrderPendingScreen> {
             itemCount: orders.length,
             itemBuilder: (_, index) {
               ShopOrderModel order = orders[index];
-              return OrderList(
+              return OrderCard(
                 order: order,
                 onTap: () {},
               );
