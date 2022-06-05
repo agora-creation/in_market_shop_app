@@ -3,6 +3,10 @@ import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/screens/login.dart';
+import 'package:in_market_shop_app/screens/setting_email.dart';
+import 'package:in_market_shop_app/screens/setting_name.dart';
+import 'package:in_market_shop_app/screens/setting_password.dart';
+import 'package:in_market_shop_app/screens/setting_shop.dart';
 import 'package:in_market_shop_app/widgets/round_lg_button.dart';
 import 'package:in_market_shop_app/widgets/tap_list_tile.dart';
 import 'package:provider/provider.dart';
@@ -39,20 +43,30 @@ class _SettingScreenState extends State<SettingScreen> {
           TapListTile(
             title: '名前の変更',
             subtitle: shop?.name,
-            onTap: () {},
+            onTap: () {
+              authProvider.nameController.text = shop?.name ?? '';
+              nextScreen(context, const SettingNameScreen());
+            },
           ),
           TapListTile(
             title: 'メールアドレスの変更',
             subtitle: shop?.email,
-            onTap: () {},
+            onTap: () {
+              authProvider.emailController.text = shop?.email ?? '';
+              nextScreen(context, const SettingEmailScreen());
+            },
           ),
           TapListTile(
             title: 'パスワードの変更',
-            onTap: () {},
+            onTap: () {
+              nextScreen(context, const SettingPasswordScreen());
+            },
           ),
           TapListTile(
             title: '店舗設定',
-            onTap: () {},
+            onTap: () {
+              nextScreen(context, const SettingShopScreen());
+            },
           ),
           const SizedBox(height: 32),
           RoundLgButton(
