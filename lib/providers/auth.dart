@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/services/shop.dart';
 
@@ -97,7 +96,6 @@ class AuthProvider with ChangeNotifier {
     await auth?.signOut();
     _status = Status.unauthenticated;
     _shop = null;
-    await removePrefs('shopId');
     notifyListeners();
     return Future.delayed(Duration.zero);
   }

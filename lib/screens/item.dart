@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
-import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
@@ -36,7 +35,7 @@ class ItemScreen extends StatelessWidget {
         ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: itemProvider.streamList(shop: shop),
+        stream: itemProvider.streamItems(shop: shop),
         builder: (context, snapshot) {
           items.clear();
           if (snapshot.hasData) {
@@ -51,7 +50,11 @@ class ItemScreen extends StatelessWidget {
           return GridView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
-            gridDelegate: itemGridDelegate,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+            ),
             itemCount: items.length,
             itemBuilder: (_, index) {
               ShopItemModel item = items[index];

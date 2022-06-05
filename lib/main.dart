@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
+import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/home.dart';
 import 'package:in_market_shop_app/screens/login.dart';
 import 'package:in_market_shop_app/screens/splash.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: AuthProvider.initialize()),
         ChangeNotifierProvider.value(value: ItemProvider()),
+        ChangeNotifierProvider.value(value: OrderProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

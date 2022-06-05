@@ -115,7 +115,7 @@ class ItemProvider with ChangeNotifier {
     return errorText;
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({ShopModel? shop}) {
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamItems({ShopModel? shop}) {
     Stream<QuerySnapshot<Map<String, dynamic>>>? ret;
     ret = FirebaseFirestore.instance
         .collection('shop')

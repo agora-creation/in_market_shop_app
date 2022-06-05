@@ -12,7 +12,7 @@ ThemeData theme() {
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       titleTextStyle: TextStyle(
         color: Colors.black54,
-        fontSize: 18.0,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
         fontFamily: 'SourceHanSans-Bold',
       ),
@@ -32,12 +32,11 @@ const BoxDecoration loginDecoration = BoxDecoration(
 
 const TextStyle loginMessageStyle = TextStyle(
   color: Colors.white,
-  fontSize: 18.0,
+  fontSize: 18,
 );
 
-const SliverGridDelegate itemGridDelegate =
-    SliverGridDelegateWithFixedCrossAxisCount(
-  crossAxisCount: 5,
-  mainAxisSpacing: 16,
-  crossAxisSpacing: 16,
+const BoxDecoration kBottomBorder = BoxDecoration(
+  border: Border(
+    bottom: BorderSide(color: Color(0xFFBDBDBD)),
+  ),
 );

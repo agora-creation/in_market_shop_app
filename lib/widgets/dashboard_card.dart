@@ -6,7 +6,7 @@ class DashboardCard extends StatelessWidget {
   final int mainAxisCellCount;
   final IconData? iconData;
   final String? labelText;
-  final String? chipText;
+  final int count;
   final Function()? onTap;
 
   const DashboardCard({
@@ -14,7 +14,7 @@ class DashboardCard extends StatelessWidget {
     this.mainAxisCellCount = 1,
     this.iconData,
     this.labelText,
-    this.chipText,
+    this.count = 0,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -28,7 +28,7 @@ class DashboardCard extends StatelessWidget {
         onTap: onTap,
         child: Card(
           color: Colors.white,
-          elevation: 0,
+          elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -36,7 +36,7 @@ class DashboardCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              chipText != null
+              count != 0
                   ? Padding(
                       padding: const EdgeInsets.all(8),
                       child: Align(
@@ -44,7 +44,7 @@ class DashboardCard extends StatelessWidget {
                         child: Chip(
                           backgroundColor: Colors.red.shade400,
                           label: Text(
-                            chipText ?? '',
+                            '$count',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,

@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
+import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
+import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/delivery.dart';
 import 'package:in_market_shop_app/screens/item.dart';
 import 'package:in_market_shop_app/screens/order_add.dart';
@@ -27,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     ShopModel? shop = authProvider.shop;
+    final orderProvider = Provider.of<OrderProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,13 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Dashboard(
         children: [
-          DashboardCard(
-            crossAxisCellCount: 2,
-            mainAxisCellCount: 2,
-            iconData: Icons.shopping_cart,
-            labelText: '受注待ち',
-            chipText: '10',
-            onTap: () => overlayScreen(context, const OrderPendingScreen()),
+          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: orderProvider.streamOrders(shop: shop, status: 1),
+            builder: (context, snapshot) {
+              List<ShopOrderModel> orders = [];
+              if (snapshot.hasData) {
+                for (DocumentSnapshot<Map<String, dynamic>> doc
+                    in snapshot.data!.docs) {
+                  orders.add(ShopOrderModel.fromSnapshot(doc));
+                }
+              }
+              return DashboardCard(
+                crossAxisCellCount: 2,
+                mainAxisCellCount: 2,
+                iconData: Icons.shopping_cart,
+                labelText: '受注待ち',
+                count: orders.length,
+                onTap: () => overlayScreen(context, const OrderPendingScreen()),
+              );
+            },
           ),
           DashboardCard(
             iconData: Icons.local_shipping,
