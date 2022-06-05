@@ -65,10 +65,24 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          DashboardCard(
-            iconData: Icons.local_shipping,
-            labelText: '配達待ち',
-            onTap: () => overlayScreen(context, const OrderShippingScreen()),
+          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: orderProvider.streamOrders(shop: shop, status: 2),
+            builder: (context, snapshot) {
+              List<ShopOrderModel> orders = [];
+              if (snapshot.hasData) {
+                for (DocumentSnapshot<Map<String, dynamic>> doc
+                    in snapshot.data!.docs) {
+                  orders.add(ShopOrderModel.fromSnapshot(doc));
+                }
+              }
+              return DashboardCard(
+                iconData: Icons.local_shipping,
+                labelText: '配達待ち',
+                count: orders.length,
+                onTap: () =>
+                    overlayScreen(context, const OrderShippingScreen()),
+              );
+            },
           ),
           DashboardCard(
             iconData: Icons.history_edu,

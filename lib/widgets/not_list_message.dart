@@ -10,9 +10,9 @@ class NotListMessage extends StatelessWidget {
     return Center(
       child: Text(
         message ?? '',
-        style: const TextStyle(
-          color: Colors.redAccent,
-          fontSize: 32,
+        style: TextStyle(
+          color: Colors.red.shade400,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
           fontFamily: 'SourceHanSans-Bold',
         ),
