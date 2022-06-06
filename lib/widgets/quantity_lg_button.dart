@@ -3,9 +3,13 @@ import 'package:in_market_shop_app/models/cart.dart';
 
 class QuantityLgButton extends StatelessWidget {
   final CartModel cart;
+  final Function()? removeOnTap;
+  final Function()? addOnTap;
 
   const QuantityLgButton({
     required this.cart,
+    this.removeOnTap,
+    this.addOnTap,
     Key? key,
   }) : super(key: key);
 
@@ -20,7 +24,7 @@ class QuantityLgButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: removeOnTap,
             icon: Icon(
               Icons.remove,
               color: Colors.blue.shade400,
@@ -37,7 +41,7 @@ class QuantityLgButton extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: addOnTap,
             icon: Icon(
               Icons.add,
               color: Colors.blue.shade400,

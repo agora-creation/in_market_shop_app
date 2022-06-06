@@ -50,14 +50,20 @@ class OrderProvider with ChangeNotifier {
     if (order == null) errorText = '注文情報の更新に失敗しました。';
     if (cartList == null) errorText = 'カートに商品がありません。';
     try {
+      List<Map> newCartList = [];
+      for (CartModel cart in cartList ?? []) {
+        newCartList.add(cart.toMap());
+      }
       orderService.update({
         'id': order?.id,
         'shopId': order?.shopId,
+        'cartList': newCartList,
         'status': status,
       });
     } catch (e) {
       errorText = '注文情報の更新に失敗しました。';
     }
+    notifyListeners();
     return errorText;
   }
 
@@ -72,6 +78,7 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       errorText = '注文のキャンセルに失敗しました。';
     }
+    notifyListeners();
     return errorText;
   }
 
@@ -84,7 +91,7 @@ class OrderProvider with ChangeNotifier {
         .collection('shop')
         .doc(shop?.id ?? 'error')
         .collection('order')
-        .where('status', isEqualTo: status)
+        .where('status', isEqualTo: status ?? 99)
         .orderBy('createdAt', descending: true)
         .snapshots();
     return ret;

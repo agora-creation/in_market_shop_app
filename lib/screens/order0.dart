@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
+import 'package:in_market_shop_app/screens/order0_detail.dart';
+import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +49,9 @@ class _Order0ScreenState extends State<Order0Screen> {
               orders.add(ShopOrderModel.fromSnapshot(doc));
             }
           }
-          if (orders.isEmpty) return const Center(child: Text('注文がありません'));
+          if (orders.isEmpty) {
+            return const NotListMessage(message: '配達完了の注文がありません');
+          }
           return ListView.builder(
             padding: const EdgeInsets.all(24),
             itemCount: orders.length,
@@ -54,7 +59,10 @@ class _Order0ScreenState extends State<Order0Screen> {
               ShopOrderModel order = orders[index];
               return OrderCard(
                 order: order,
-                onTap: () {},
+                onTap: () => nextScreen(
+                  context,
+                  Order0DetailScreen(order: order),
+                ),
               );
             },
           );

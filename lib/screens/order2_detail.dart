@@ -1,38 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
-import 'package:in_market_shop_app/models/cart.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/order.dart';
-import 'package:in_market_shop_app/widgets/cart_list.dart';
+import 'package:in_market_shop_app/widgets/cart_list2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
 import 'package:in_market_shop_app/widgets/label_column.dart';
 import 'package:in_market_shop_app/widgets/round_sm_button.dart';
 import 'package:provider/provider.dart';
 
-class Order1DetailScreen extends StatefulWidget {
+class Order2DetailScreen extends StatefulWidget {
   final ShopOrderModel order;
 
-  const Order1DetailScreen({required this.order, Key? key}) : super(key: key);
+  const Order2DetailScreen({required this.order, Key? key}) : super(key: key);
 
   @override
-  State<Order1DetailScreen> createState() => _Order1DetailScreenState();
+  State<Order2DetailScreen> createState() => _Order2DetailScreenState();
 }
 
-class _Order1DetailScreenState extends State<Order1DetailScreen> {
-  List<CartModel> cartList = [];
-
-  void _init() {
-    if (mounted) {
-      setState(() => cartList = widget.order.cartList);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
+class _Order2DetailScreenState extends State<Order2DetailScreen> {
   @override
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
@@ -43,7 +28,7 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
         backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('受注待ち - 詳細'),
+        title: const Text('配達待ち - 詳細'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.chevron_left),
@@ -75,57 +60,23 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
                     const SizedBox(height: 16),
                     LabelColumn(
                       labelText: '注文商品',
-                      children: cartList.map((cart) {
-                        var index = cartList.indexOf(cart);
-                        int befQuantity = widget.order.cartList[index].quantity;
-                        return CartList(
-                          cart: cart,
-                          befQuantity: befQuantity,
-                          removeOnTap: () {
-                            if (cart.quantity > 1) {
-                              setState(() => cart.quantity -= 1);
-                            }
-                          },
-                          addOnTap: () {
-                            setState(() => cart.quantity += 1);
-                          },
-                        );
+                      children: widget.order.cartList.map((cart) {
+                        return CartList2(cart: cart);
                       }).toList(),
                     ),
                     const SizedBox(height: 32),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         RoundSmButton(
-                          labelText: '配達待ちにする',
+                          labelText: '配達完了にする',
                           labelColor: Colors.white,
                           backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
                             String? errorText = await orderProvider.update(
                               order: widget.order,
-                              cartList: cartList,
-                              status: 2,
-                            );
-                            if (errorText != null) {
-                              showDialog(
-                                context: context,
-                                builder: (_) => ErrorDialog(
-                                  message: errorText,
-                                ),
-                              );
-                              return;
-                            }
-                            if (!mounted) return;
-                            Navigator.pop(context);
-                          },
-                        ),
-                        RoundSmButton(
-                          labelText: 'キャンセルする',
-                          labelColor: Colors.white,
-                          backgroundColor: Colors.red.shade400,
-                          onPressed: () async {
-                            String? errorText = await orderProvider.cancel(
-                              order: widget.order,
+                              cartList: widget.order.cartList,
+                              status: 0,
                             );
                             if (errorText != null) {
                               showDialog(

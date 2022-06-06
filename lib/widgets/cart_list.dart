@@ -4,9 +4,15 @@ import 'package:in_market_shop_app/widgets/quantity_lg_button.dart';
 
 class CartList extends StatelessWidget {
   final CartModel cart;
+  final int befQuantity;
+  final Function()? removeOnTap;
+  final Function()? addOnTap;
 
   const CartList({
     required this.cart,
+    required this.befQuantity,
+    this.removeOnTap,
+    this.addOnTap,
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +42,7 @@ class CartList extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '希望数量:　${cart.quantity} ${cart.unit}',
+                    '希望数量:　$befQuantity ${cart.unit}',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
@@ -45,7 +51,11 @@ class CartList extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 24),
-              QuantityLgButton(cart: cart),
+              QuantityLgButton(
+                cart: cart,
+                removeOnTap: removeOnTap,
+                addOnTap: addOnTap,
+              ),
             ],
           ),
         ),
