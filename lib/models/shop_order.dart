@@ -10,9 +10,7 @@ class ShopOrderModel {
   String _userId = '';
   String _userName = '';
   List<CartModel> cartList = [];
-  String _zip = '';
-  String _address = '';
-  String _tel = '';
+  String _deliveryId = '';
   int _status = 0;
   DateTime _createdAt = DateTime.now();
 
@@ -21,9 +19,7 @@ class ShopOrderModel {
   String get shopName => _shopName;
   String get userId => _userId;
   String get userName => _userName;
-  String get zip => _zip;
-  String get address => _address;
-  String get tel => _tel;
+  String get deliveryId => _deliveryId;
   int get status => _status;
   DateTime get createdAt => _createdAt;
 
@@ -34,9 +30,7 @@ class ShopOrderModel {
     _userId = snapshot.data()!['userId'] ?? '';
     _userName = snapshot.data()!['userName'] ?? '';
     cartList = _convertList(snapshot.data()!['cartList'] ?? []);
-    _zip = snapshot.data()!['zip'] ?? '';
-    _address = snapshot.data()!['address'] ?? '';
-    _tel = snapshot.data()!['tel'] ?? '';
+    _deliveryId = snapshot.data()!['deliveryId'] ?? '';
     _status = snapshot.data()!['status'] ?? 0;
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }

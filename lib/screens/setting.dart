@@ -68,7 +68,7 @@ class _SettingScreenState extends State<SettingScreen> {
               nextScreen(context, const SettingShopScreen());
             },
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           RoundLgButton(
             labelText: 'ログアウト',
             labelColor: Colors.blue.shade400,

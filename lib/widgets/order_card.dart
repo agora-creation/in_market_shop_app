@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 
 class OrderCard extends StatelessWidget {
@@ -26,6 +27,14 @@ class OrderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    '注文日時: ${dateText('yyyy/MM/dd HH:mm', order.createdAt)}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
                     order.userName,
                     style: const TextStyle(
                       fontSize: 20,
@@ -33,7 +42,7 @@ class OrderCard extends StatelessWidget {
                       fontFamily: 'SourceHanSans-Bold',
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: order.cartList.map((cart) {

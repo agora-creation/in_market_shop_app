@@ -6,6 +6,7 @@ import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/order1_detail.dart';
+import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
@@ -41,14 +42,15 @@ class _Order1ScreenState extends State<Order1Screen> {
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: orderProvider.streamOrders(shop: shop, status: 1),
         builder: (context, snapshot) {
-          orders.clear();
           if (snapshot.hasData) {
             for (DocumentSnapshot<Map<String, dynamic>> doc
                 in snapshot.data!.docs) {
               orders.add(ShopOrderModel.fromSnapshot(doc));
             }
           }
-          if (orders.isEmpty) return const Center(child: Text('注文がありません'));
+          if (orders.isEmpty) {
+            return const NotListMessage(message: '受注待ちの注文がありません');
+          }
           return ListView.builder(
             padding: const EdgeInsets.all(24),
             itemCount: orders.length,
@@ -56,8 +58,10 @@ class _Order1ScreenState extends State<Order1Screen> {
               ShopOrderModel order = orders[index];
               return OrderCard(
                 order: order,
-                onTap: () =>
-                    nextScreen(context, Order1DetailScreen(order: order)),
+                onTap: () => nextScreen(
+                  context,
+                  Order1DetailScreen(order: order),
+                ),
               );
             },
           );

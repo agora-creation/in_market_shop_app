@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: const [Locale('ja')],
         locale: const Locale('ja'),
-        title: 'InMarket(店舗用)',
+        title: 'InMarket - 店舗用',
         theme: theme(),
         home: const SplashController(),
       ),

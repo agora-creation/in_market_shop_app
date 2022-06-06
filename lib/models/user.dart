@@ -5,9 +5,7 @@ class UserModel {
   String _email = '';
   String _password = '';
   String _name = '';
-  String _zip = '';
-  String _address = '';
-  String _tel = '';
+  String _imageUrl = '';
   String _shopId = '';
   List<String> itemIds = [];
   String _token = '';
@@ -17,9 +15,7 @@ class UserModel {
   String get email => _email;
   String get password => _password;
   String get name => _name;
-  String get zip => _zip;
-  String get address => _address;
-  String get tel => _tel;
+  String get imageUrl => _imageUrl;
   String get shopId => _shopId;
   String get token => _token;
   DateTime get createdAt => _createdAt;
@@ -29,9 +25,7 @@ class UserModel {
     _email = snapshot.data()!['email'] ?? '';
     _password = snapshot.data()!['password'] ?? '';
     _name = snapshot.data()!['name'] ?? '';
-    _zip = snapshot.data()!['zip'] ?? '';
-    _address = snapshot.data()!['address'] ?? '';
-    _tel = snapshot.data()!['tel'] ?? '';
+    _imageUrl = snapshot.data()!['imageUrl'] ?? '';
     _shopId = snapshot.data()!['shopId'] ?? '';
     itemIds = _convertList(snapshot.data()!['itemIds'] ?? []);
     _token = snapshot.data()!['token'] ?? '';

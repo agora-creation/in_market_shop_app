@@ -18,6 +18,7 @@ class AuthProvider with ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  bool priceViewController = false;
 
   void clearController() {
     emailController.text = '';
@@ -92,6 +93,77 @@ class AuthProvider with ChangeNotifier {
     return errorText;
   }
 
+  Future<String?> updateName() async {
+    String? errorText;
+    if (nameController.text.isEmpty) errorText = 'お名前を入力してください。';
+    try {
+      shopService.update({
+        'id': _shop?.id,
+        'name': nameController.text.trim(),
+      });
+    } catch (e) {
+      errorText = 'お名前の更新に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updateEmail() async {
+    String? errorText;
+    if (emailController.text.isEmpty) errorText = 'メールアドレスを入力してください。';
+    try {
+      await auth?.currentUser
+          ?.updateEmail(emailController.text.trim())
+          .then((value) {
+        shopService.update({
+          'id': _shop?.id,
+          'email': emailController.text.trim(),
+        });
+      });
+    } catch (e) {
+      errorText = 'メールアドレスの更新に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updatePassword() async {
+    String? errorText;
+    if (passwordController.text.isEmpty) errorText = 'パスワードを入力してください。';
+    if (passwordController.text != rePasswordController.text) {
+      errorText = 'パスワードをご確認ください。';
+    }
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _shop?.email ?? '',
+        password: _shop?.password ?? '',
+      );
+      await auth?.signInWithCredential(credential);
+      await auth?.currentUser
+          ?.updatePassword(passwordController.text.trim())
+          .then((value) {
+        shopService.update({
+          'id': _shop?.id,
+          'password': passwordController.text.trim(),
+        });
+      });
+    } catch (e) {
+      errorText = 'パスワードの更新に失敗しました。';
+    }
+    return errorText;
+  }
+
+  Future<String?> updateShop() async {
+    String? errorText;
+    try {
+      shopService.update({
+        'id': _shop?.id,
+        'priceView': priceViewController,
+      });
+    } catch (e) {
+      errorText = '店舗設定の更新に失敗しました。';
+    }
+    return errorText;
+  }
+
   Future logout() async {
     await auth?.signOut();
     _status = Status.unauthenticated;
@@ -100,7 +172,7 @@ class AuthProvider with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
-  Future reloadUser() async {
+  Future reloadShop() async {
     _shop = await shopService.select(id: _fUser?.uid);
     notifyListeners();
   }
@@ -113,6 +185,11 @@ class AuthProvider with ChangeNotifier {
       _status = Status.authenticated;
       _shop = await shopService.select(id: _fUser?.uid);
     }
+    notifyListeners();
+  }
+
+  void priceViewChange(bool? value) {
+    priceViewController = value ?? false;
     notifyListeners();
   }
 }

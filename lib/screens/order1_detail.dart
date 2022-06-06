@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
-import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/order.dart';
-import 'package:in_market_shop_app/widgets/round_lg_button.dart';
+import 'package:in_market_shop_app/widgets/cart_list.dart';
+import 'package:in_market_shop_app/widgets/error_dialog.dart';
+import 'package:in_market_shop_app/widgets/label_column.dart';
+import 'package:in_market_shop_app/widgets/round_sm_button.dart';
 import 'package:provider/provider.dart';
 
 class Order1DetailScreen extends StatefulWidget {
@@ -26,7 +28,7 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
         backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('受注待ち詳細'),
+        title: const Text('受注待ち - 詳細'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.chevron_left),
@@ -40,102 +42,62 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
               child: Card(
                 elevation: 3,
                 child: ListView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(16),
                   children: [
-                    const Text(
-                      '注文情報',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SourceHanSans-Bold',
-                      ),
+                    LabelColumn(
+                      labelText: '注文情報',
+                      children: [
+                        Text(
+                          '注文日時: ${dateText('yyyy/MM/dd HH:mm', widget.order.createdAt)}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          '注文者: ${widget.order.userName}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '注文元: ${widget.order.shopName}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      '注文日時: ${dateText('yyyy/MM/dd HH:mm', widget.order.createdAt)}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const Divider(height: 32),
-                    const Text(
-                      '注文商品',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SourceHanSans-Bold',
-                      ),
-                    ),
-                    Column(
+                    const SizedBox(height: 16),
+                    LabelColumn(
+                      labelText: '注文商品',
                       children: widget.order.cartList.map((cart) {
-                        return Container(
-                          decoration: kBottomBorder,
-                          height: 100,
-                          padding: const EdgeInsets.all(0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        'https://placehold.jp/300x200.png',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 18,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      cart.name,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'SourceHanSans-Bold',
-                                      ),
-                                    ),
-                                    Text(
-                                      '数量:　${cart.quantity} ${cart.unit}',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'SourceHanSans-Bold',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                        return CartList(cart: cart);
                       }).toList(),
                     ),
                     const SizedBox(height: 32),
-                    RoundLgButton(
-                      labelText: '配達待ちにする',
-                      labelColor: Colors.white,
-                      backgroundColor: Colors.orange.shade400,
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    RoundLgButton(
-                      labelText: '配達完了にする',
-                      labelColor: Colors.white,
-                      backgroundColor: Colors.blue.shade400,
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RoundSmButton(
+                          labelText: '配達待ちにする',
+                          labelColor: Colors.white,
+                          backgroundColor: Colors.blue.shade400,
+                          onPressed: () async {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        RoundSmButton(
+                          labelText: 'キャンセルする',
+                          labelColor: Colors.white,
+                          backgroundColor: Colors.red.shade400,
+                          onPressed: () async {
+                            String? errorText = await orderProvider.cancel(
+                              order: widget.order,
+                            );
+                            if (errorText != null) {
+                              showDialog(
+                                context: context,
+                                builder: (_) => ErrorDialog(
+                                  message: errorText,
+                                ),
+                              );
+                              return;
+                            }
+                            if (!mounted) return;
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

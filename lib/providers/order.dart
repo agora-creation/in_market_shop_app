@@ -31,9 +31,7 @@ class OrderProvider with ChangeNotifier {
         'userId': user?.id,
         'userName': user?.name,
         'cartList': newCartList,
-        'zip': user?.zip,
-        'address': user?.address,
-        'tel': user?.tel,
+        'deliveryId': '',
         'status': 0,
         'createdAt': DateTime.now(),
       });
@@ -49,7 +47,7 @@ class OrderProvider with ChangeNotifier {
     required int status,
   }) async {
     String? errorText;
-    if (order == null) errorText = '注文のキャンセルに失敗しました。';
+    if (order == null) errorText = '注文情報の更新に失敗しました。';
     if (cartList == null) errorText = 'カートに商品がありません。';
     try {
       orderService.update({
@@ -58,7 +56,7 @@ class OrderProvider with ChangeNotifier {
         'status': status,
       });
     } catch (e) {
-      errorText = '注文のキャンセルに失敗しました。';
+      errorText = '注文情報の更新に失敗しました。';
     }
     return errorText;
   }
