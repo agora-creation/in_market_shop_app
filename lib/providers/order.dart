@@ -41,7 +41,7 @@ class OrderProvider with ChangeNotifier {
     return errorText;
   }
 
-  Future<String?> updateStatus({
+  Future<String?> update({
     ShopOrderModel? order,
     List<CartModel>? cartList,
     required int status,

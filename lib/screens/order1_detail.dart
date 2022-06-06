@@ -73,6 +73,12 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
                           labelColor: Colors.white,
                           backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
+                            String? errorText = await orderProvider.update(
+                              order: widget.order,
+                              cartList: widget.order.cartList,
+                              status: 2,
+                            );
+                            if (!mounted) return;
                             Navigator.pop(context);
                           },
                         ),
