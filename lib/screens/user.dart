@@ -4,6 +4,8 @@ import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/user.dart';
+import 'package:in_market_shop_app/widgets/image_card.dart';
+import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
 class UserScreen extends StatefulWidget {
@@ -45,27 +47,23 @@ class _UserScreenState extends State<UserScreen> {
               users.add(UserModel.fromSnapshot(doc));
             }
           }
-          if (users.isEmpty) return const Center(child: Text('注文者はいません'));
+          if (users.isEmpty) {
+            return const NotListMessage(message: '注文者がいません');
+          }
           return GridView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
             ),
             itemCount: users.length,
             itemBuilder: (_, index) {
               UserModel user = users[index];
-              return GestureDetector(
+              return ImageCard(
+                title: user.name,
                 onTap: () {},
-                child: Card(
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(user.name),
-                  ),
-                ),
               );
             },
           );

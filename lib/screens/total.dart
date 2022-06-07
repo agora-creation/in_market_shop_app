@@ -6,8 +6,9 @@ class TotalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('集計'),

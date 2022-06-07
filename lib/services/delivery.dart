@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserService {
-  final String _collection = 'user';
+class DeliveryService {
+  final String _collection = 'delivery';
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   void update(Map<String, dynamic> values) {

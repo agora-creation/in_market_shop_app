@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/functions.dart';
-import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
+import 'package:in_market_shop_app/providers/user.dart';
 import 'package:in_market_shop_app/screens/order0_detail.dart';
 import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:in_market_shop_app/widgets/order_card.dart';
-import 'package:in_market_shop_app/widgets/radio_list.dart';
 import 'package:in_market_shop_app/widgets/search_button.dart';
+import 'package:in_market_shop_app/widgets/select_list.dart';
 import 'package:provider/provider.dart';
 
 class Order0Screen extends StatefulWidget {
@@ -27,6 +27,7 @@ class _Order0ScreenState extends State<Order0Screen> {
     final authProvider = Provider.of<AuthProvider>(context);
     ShopModel? shop = authProvider.shop;
     final orderProvider = Provider.of<OrderProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     List<ShopOrderModel> orders = [];
 
     return Scaffold(
@@ -73,6 +74,7 @@ class _Order0ScreenState extends State<Order0Screen> {
                       builder: (_) => SearchUserDialog(
                         authProvider: authProvider,
                         orderProvider: orderProvider,
+                        userProvider: userProvider,
                       ),
                     );
                   },
@@ -120,10 +122,12 @@ class _Order0ScreenState extends State<Order0Screen> {
 class SearchUserDialog extends StatefulWidget {
   final AuthProvider authProvider;
   final OrderProvider orderProvider;
+  final UserProvider userProvider;
 
   const SearchUserDialog({
     required this.authProvider,
     required this.orderProvider,
+    required this.userProvider,
     Key? key,
   }) : super(key: key);
 
@@ -132,24 +136,12 @@ class SearchUserDialog extends StatefulWidget {
 }
 
 class _SearchUserDialogState extends State<SearchUserDialog> {
-  List<UserModel> users = [];
-
-  void _init() async {
-    ShopModel? shop = widget.authProvider.shop;
-    List<UserModel> tmp = await widget.authProvider.selectUsers(shop?.id);
-    if (mounted) {
-      setState(() => users = tmp);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    ShopModel? shop = authProvider.shop;
+    List<UserModel> users = [];
+
     return AlertDialog(
       title: const Text(
         '注文者で検索',
@@ -163,27 +155,38 @@ class _SearchUserDialogState extends State<SearchUserDialog> {
         height: 300,
         child: Column(
           children: [
-            Container(
-              decoration: kBottomBorder,
-              child: ListTile(
-                leading: Icon(Icons.check_circle),
-                title: Text('指定なし'),
-                onTap: () => widget.orderProvider.clearUser(),
-              ),
+            SelectList(
+              labelText: '指定なし',
+              checked: widget.orderProvider.user == null,
+              onTap: () {
+                widget.orderProvider.clearUser();
+                Navigator.pop(context);
+              },
             ),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: users.length,
-                itemBuilder: (_, index) {
-                  UserModel user = users[index];
-                  return RadioList(
-                    labelText: user.name,
-                    value: user,
-                    groupValue: widget.orderProvider.user,
-                    onChanged: (value) {
-                      widget.orderProvider.changeUser(value);
-                      Navigator.pop(context);
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: widget.userProvider.streamUsers(shop: shop),
+                builder: (context, snapshot) {
+                  users.clear();
+                  if (snapshot.hasData) {
+                    for (DocumentSnapshot<Map<String, dynamic>> doc
+                        in snapshot.data!.docs) {
+                      users.add(UserModel.fromSnapshot(doc));
+                    }
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: users.length,
+                    itemBuilder: (_, index) {
+                      UserModel user = users[index];
+                      return SelectList(
+                        labelText: user.name,
+                        checked: widget.orderProvider.user?.id == user.id,
+                        onTap: () {
+                          widget.orderProvider.changeUser(user);
+                          Navigator.pop(context);
+                        },
+                      );
                     },
                   );
                 },

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/helpers/style.dart';
 
-class RadioList extends StatelessWidget {
+class SelectList extends StatelessWidget {
   final String? labelText;
-  final dynamic value;
-  final dynamic groupValue;
-  final Function(dynamic)? onChanged;
+  final bool checked;
+  final Function()? onTap;
 
-  const RadioList({
+  const SelectList({
     this.labelText,
-    required this.value,
-    required this.groupValue,
-    required this.onChanged,
+    this.checked = false,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -19,7 +17,10 @@ class RadioList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: kBottomBorder,
-      child: RadioListTile(
+      child: ListTile(
+        leading: checked == true
+            ? const Icon(Icons.check_circle, color: Colors.lightBlue)
+            : const Icon(Icons.circle_outlined),
         title: Text(
           labelText ?? '',
           style: const TextStyle(
@@ -27,10 +28,7 @@ class RadioList extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        value: value,
-        groupValue: groupValue,
-        activeColor: Colors.lightBlue,
-        onChanged: onChanged,
+        onTap: onTap,
       ),
     );
   }

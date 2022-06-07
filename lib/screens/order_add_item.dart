@@ -71,6 +71,16 @@ class _OrderAddItemScreenState extends State<OrderAddItemScreen> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.of(context, rootNavigator: true).pop();
+        },
+        label: const Text('注文して配達完了にする'),
+        icon: const Icon(Icons.check),
+        backgroundColor: Colors.blue,
+        elevation: 3,
+      ),
     );
   }
 }
