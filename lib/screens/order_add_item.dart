@@ -64,7 +64,7 @@ class _OrderAddItemScreenState extends State<OrderAddItemScreen> {
               ShopItemModel item = items[index];
               return ImageCard(
                 title: item.name,
-                subTitle: '¥ ${item.price}',
+                subTitle: shop?.priceView == true ? '¥ ${item.price}' : null,
                 onTap: () {},
               );
             },

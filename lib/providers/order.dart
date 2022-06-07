@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/cart.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_order.dart';
@@ -82,18 +83,47 @@ class OrderProvider with ChangeNotifier {
     return errorText;
   }
 
+  DateTime month = DateTime.now();
+  UserModel? user;
+
+  void changeMonth(DateTime selected) {
+    month = selected;
+    notifyListeners();
+  }
+
+  void changeUser(UserModel selected) {
+    user = selected;
+    notifyListeners();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamOrders({
     ShopModel? shop,
     int? status,
   }) {
     Stream<QuerySnapshot<Map<String, dynamic>>>? ret;
-    ret = FirebaseFirestore.instance
-        .collection('shop')
-        .doc(shop?.id ?? 'error')
-        .collection('order')
-        .where('status', isEqualTo: status ?? 99)
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+    if (status == 0) {
+      DateTime monthS = DateTime(month.year, month.month, 1);
+      DateTime monthE = DateTime(month.year, month.month + 1, 1).add(
+        const Duration(days: -1),
+      );
+      Timestamp timestampS = convertTimestamp(monthS, false);
+      Timestamp timestampE = convertTimestamp(monthE, true);
+      ret = FirebaseFirestore.instance
+          .collection('shop')
+          .doc(shop?.id ?? 'error')
+          .collection('order')
+          .where('status', isEqualTo: status ?? 99)
+          .orderBy('createdAt', descending: true)
+          .startAt([timestampE]).endAt([timestampS]).snapshots();
+    } else {
+      ret = FirebaseFirestore.instance
+          .collection('shop')
+          .doc(shop?.id ?? 'error')
+          .collection('order')
+          .where('status', isEqualTo: status ?? 99)
+          .orderBy('createdAt', descending: true)
+          .snapshots();
+    }
     return ret;
   }
 }

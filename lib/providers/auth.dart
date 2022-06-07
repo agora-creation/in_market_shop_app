@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/models/shop.dart';
+import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/services/shop.dart';
+import 'package:in_market_shop_app/services/user.dart';
 
 enum Status { authenticated, uninitialized, authenticating, unauthenticated }
 
@@ -11,6 +13,7 @@ class AuthProvider with ChangeNotifier {
   FirebaseAuth? auth;
   User? _fUser;
   ShopService shopService = ShopService();
+  UserService userService = UserService();
   ShopModel? _shop;
   ShopModel? get shop => _shop;
 
@@ -191,5 +194,9 @@ class AuthProvider with ChangeNotifier {
   void priceViewChange(bool? value) {
     priceViewController = value ?? false;
     notifyListeners();
+  }
+
+  Future<List<UserModel>> selectUsers(String? shopId) async {
+    return await userService.selectList(shopId: shopId);
   }
 }
