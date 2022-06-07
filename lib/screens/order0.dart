@@ -10,6 +10,7 @@ import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/order0_detail.dart';
 import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:in_market_shop_app/widgets/order_card.dart';
+import 'package:in_market_shop_app/widgets/radio_list.dart';
 import 'package:in_market_shop_app/widgets/search_button.dart';
 import 'package:provider/provider.dart';
 
@@ -152,29 +153,43 @@ class _SearchUserDialogState extends State<SearchUserDialog> {
     return AlertDialog(
       title: const Text(
         '注文者で検索',
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(
+          color: Colors.black54,
+          fontSize: 16,
+        ),
       ),
       content: SizedBox(
         width: double.maxFinite,
-        height: 250,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: users.length,
-          itemBuilder: (_, index) {
-            UserModel user = users[index];
-            return Container(
+        height: 300,
+        child: Column(
+          children: [
+            Container(
               decoration: kBottomBorder,
-              child: RadioListTile(
-                title: Text(
-                  user.name,
-                  style: const TextStyle(fontSize: 18),
-                ),
-                value: user,
-                groupValue: widget.orderProvider.user,
-                onChanged: (value) {},
+              child: ListTile(
+                leading: Icon(Icons.check_circle),
+                title: Text('指定なし'),
+                onTap: () => widget.orderProvider.clearUser(),
               ),
-            );
-          },
+            ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: users.length,
+                itemBuilder: (_, index) {
+                  UserModel user = users[index];
+                  return RadioList(
+                    labelText: user.name,
+                    value: user,
+                    groupValue: widget.orderProvider.user,
+                    onChanged: (value) {
+                      widget.orderProvider.changeUser(value);
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

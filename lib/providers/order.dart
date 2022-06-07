@@ -96,6 +96,11 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void clearUser() {
+    user = null;
+    notifyListeners();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamOrders({
     ShopModel? shop,
     int? status,
@@ -108,13 +113,24 @@ class OrderProvider with ChangeNotifier {
       );
       Timestamp timestampS = convertTimestamp(monthS, false);
       Timestamp timestampE = convertTimestamp(monthE, true);
-      ret = FirebaseFirestore.instance
-          .collection('shop')
-          .doc(shop?.id ?? 'error')
-          .collection('order')
-          .where('status', isEqualTo: status ?? 99)
-          .orderBy('createdAt', descending: true)
-          .startAt([timestampE]).endAt([timestampS]).snapshots();
+      if (user == null) {
+        ret = FirebaseFirestore.instance
+            .collection('shop')
+            .doc(shop?.id ?? 'error')
+            .collection('order')
+            .where('status', isEqualTo: status ?? 99)
+            .orderBy('createdAt', descending: true)
+            .startAt([timestampE]).endAt([timestampS]).snapshots();
+      } else {
+        ret = FirebaseFirestore.instance
+            .collection('shop')
+            .doc(shop?.id ?? 'error')
+            .collection('order')
+            .where('userId', isEqualTo: user?.id ?? 'error')
+            .where('status', isEqualTo: status ?? 99)
+            .orderBy('createdAt', descending: true)
+            .startAt([timestampE]).endAt([timestampS]).snapshots();
+      }
     } else {
       ret = FirebaseFirestore.instance
           .collection('shop')
