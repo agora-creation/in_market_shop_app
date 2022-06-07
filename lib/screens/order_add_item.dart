@@ -1,29 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:in_market_shop_app/helpers/functions.dart';
 import 'package:in_market_shop_app/models/shop.dart';
+import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
-import 'package:in_market_shop_app/providers/user.dart';
-import 'package:in_market_shop_app/screens/order_add_item.dart';
+import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
 import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
-class OrderAddScreen extends StatefulWidget {
-  const OrderAddScreen({Key? key}) : super(key: key);
+class OrderAddItemScreen extends StatefulWidget {
+  final UserModel user;
+
+  const OrderAddItemScreen({required this.user, Key? key}) : super(key: key);
 
   @override
-  State<OrderAddScreen> createState() => _OrderAddScreenState();
+  State<OrderAddItemScreen> createState() => _OrderAddItemScreenState();
 }
 
-class _OrderAddScreenState extends State<OrderAddScreen> {
+class _OrderAddItemScreenState extends State<OrderAddItemScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     ShopModel? shop = authProvider.shop;
-    final userProvider = Provider.of<UserProvider>(context);
-    List<UserModel> users = [];
+    final itemProvider = Provider.of<ItemProvider>(context);
+    List<ShopItemModel> items = [];
 
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
@@ -31,26 +32,24 @@ class _OrderAddScreenState extends State<OrderAddScreen> {
         backgroundColor: Colors.blue.shade100,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('注文する - 注文者選択'),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-            icon: const Icon(Icons.close),
-          ),
-        ],
+        title: Text('注文する - ${widget.user.name} - 注文商品選択'),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.chevron_left),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: userProvider.streamUsers(shop: shop),
+        stream: itemProvider.streamItems(shop: shop),
         builder: (context, snapshot) {
-          users.clear();
+          items.clear();
           if (snapshot.hasData) {
             for (DocumentSnapshot<Map<String, dynamic>> doc
                 in snapshot.data!.docs) {
-              users.add(UserModel.fromSnapshot(doc));
+              items.add(ShopItemModel.fromSnapshot(doc));
             }
           }
-          if (users.isEmpty) {
-            return const NotListMessage(message: '注文者がいません');
+          if (items.isEmpty) {
+            return const NotListMessage(message: '注文する商品がありません');
           }
           return GridView.builder(
             shrinkWrap: true,
@@ -60,15 +59,13 @@ class _OrderAddScreenState extends State<OrderAddScreen> {
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
             ),
-            itemCount: users.length,
+            itemCount: items.length,
             itemBuilder: (_, index) {
-              UserModel user = users[index];
+              ShopItemModel item = items[index];
               return ImageCard(
-                title: user.name,
-                onTap: () => nextScreen(
-                  context,
-                  OrderAddItemScreen(user: user),
-                ),
+                title: item.name,
+                subTitle: '¥ ${item.price}',
+                onTap: () {},
               );
             },
           );

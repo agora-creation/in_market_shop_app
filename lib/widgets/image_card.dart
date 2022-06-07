@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ItemCard extends StatelessWidget {
-  final String? imageUrl;
-  final String? name;
-  final String? price;
+class ImageCard extends StatelessWidget {
+  final String? image;
+  final String? title;
+  final String? subTitle;
   final Function()? onTap;
 
-  const ItemCard({
-    this.imageUrl,
-    this.name,
-    this.price,
+  const ImageCard({
+    this.image,
+    this.title,
+    this.subTitle,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -27,7 +27,7 @@ class ItemCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 20 / 13,
               child: Image.network(
-                imageUrl ?? 'https://placehold.jp/300x200.png',
+                image ?? 'https://placehold.jp/300x200.png',
                 fit: BoxFit.fitWidth,
               ),
             ),
@@ -42,17 +42,17 @@ class ItemCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name ?? '',
+                      title ?? '',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'SourceHanSans-Bold',
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    price != null
+                    subTitle != null ? const SizedBox(height: 4) : Container(),
+                    subTitle != null
                         ? Text(
-                            price ?? '',
+                            subTitle ?? '',
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,

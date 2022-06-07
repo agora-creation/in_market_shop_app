@@ -7,7 +7,7 @@ import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/screens/item_add.dart';
 import 'package:in_market_shop_app/screens/item_detail.dart';
-import 'package:in_market_shop_app/widgets/item_card.dart';
+import 'package:in_market_shop_app/widgets/image_card.dart';
 import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
@@ -59,9 +59,9 @@ class ItemScreen extends StatelessWidget {
             itemCount: items.length,
             itemBuilder: (_, index) {
               ShopItemModel item = items[index];
-              return ItemCard(
-                name: item.name,
-                price: shop?.priceView == true ? '¥ ${item.price}' : null,
+              return ImageCard(
+                title: item.name,
+                subTitle: '¥ ${item.price}',
                 onTap: () {
                   itemProvider.setController(item);
                   nextScreen(context, ItemDetailScreen(item: item));
