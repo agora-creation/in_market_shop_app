@@ -11,6 +11,7 @@ class ShopOrderModel {
   String _userName = '';
   List<CartModel> cartList = [];
   String _deliveryId = '';
+  String _deliveryName = '';
   int _status = 0;
   DateTime _createdAt = DateTime.now();
 
@@ -20,6 +21,7 @@ class ShopOrderModel {
   String get userId => _userId;
   String get userName => _userName;
   String get deliveryId => _deliveryId;
+  String get deliveryName => _deliveryName;
   int get status => _status;
   DateTime get createdAt => _createdAt;
 
@@ -31,6 +33,7 @@ class ShopOrderModel {
     _userName = snapshot.data()!['userName'] ?? '';
     cartList = _convertList(snapshot.data()!['cartList'] ?? []);
     _deliveryId = snapshot.data()!['deliveryId'] ?? '';
+    _deliveryName = snapshot.data()!['deliveryName'] ?? '';
     _status = snapshot.data()!['status'] ?? 0;
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }
