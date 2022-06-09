@@ -6,7 +6,7 @@ import 'package:in_market_shop_app/models/shop_order.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/screens/order2_detail.dart';
-import 'package:in_market_shop_app/widgets/not_list_message.dart';
+import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +50,7 @@ class _Order2ScreenState extends State<Order2Screen> {
             }
           }
           if (orders.isEmpty) {
-            return const NotListMessage(message: '配達待ちの注文がありません');
+            return const CenterText(label: '配達待ちの注文がありません');
           }
           return ListView.builder(
             padding: const EdgeInsets.all(24),

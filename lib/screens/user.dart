@@ -4,8 +4,8 @@ import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/user.dart';
+import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
-import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
 class UserScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _UserScreenState extends State<UserScreen> {
             }
           }
           if (users.isEmpty) {
-            return const NotListMessage(message: '注文者がいません');
+            return const CenterText(label: '注文者がいません');
           }
           return GridView.builder(
             shrinkWrap: true,

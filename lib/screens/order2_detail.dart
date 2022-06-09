@@ -5,7 +5,7 @@ import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/widgets/cart_list2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
 import 'package:in_market_shop_app/widgets/label_column.dart';
-import 'package:in_market_shop_app/widgets/round_sm_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class Order2DetailScreen extends StatefulWidget {
@@ -68,7 +68,7 @@ class _Order2DetailScreenState extends State<Order2DetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        RoundSmButton(
+                        RoundButton(
                           labelText: '配達完了にする',
                           labelColor: Colors.white,
                           backgroundColor: Colors.blue.shade400,

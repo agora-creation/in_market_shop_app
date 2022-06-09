@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
-import 'package:in_market_shop_app/widgets/round_lg_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class SettingPasswordScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _SettingPasswordScreenState extends State<SettingPasswordScreen> {
             iconData: Icons.lock_outline,
           ),
           const SizedBox(height: 24),
-          RoundLgButton(
+          RoundButton(
             labelText: '変更内容を保存',
             labelColor: Colors.white,
             backgroundColor: Colors.blue.shade400,

@@ -4,7 +4,8 @@ import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
-import 'package:in_market_shop_app/widgets/round_sm_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
+import 'package:in_market_shop_app/widgets/switch_list.dart';
 import 'package:provider/provider.dart';
 
 class ItemAddScreen extends StatefulWidget {
@@ -78,13 +79,8 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                       iconData: Icons.description,
                     ),
                     const SizedBox(height: 8),
-                    SwitchListTile(
-                      tileColor: Colors.grey.shade200,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      title: const Text('商品情報を公開する'),
-                      secondary: const Icon(Icons.visibility),
+                    SwitchList(
+                      labelText: '商品情報を公開する',
                       value: itemProvider.openController,
                       onChanged: (value) => itemProvider.openChange(value),
                     ),
@@ -92,13 +88,14 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        RoundSmButton(
+                        RoundButton(
                           labelText: '追加する',
                           labelColor: Colors.white,
                           backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
-                            String? errorText =
-                                await itemProvider.create(shop: shop);
+                            String? errorText = await itemProvider.create(
+                              shop: shop,
+                            );
                             if (errorText != null) {
                               showDialog(
                                 context: context,

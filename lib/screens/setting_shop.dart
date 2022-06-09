@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/widgets/custom_checkbox.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
-import 'package:in_market_shop_app/widgets/round_lg_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class SettingShopScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _SettingShopScreenState extends State<SettingShopScreen> {
             onChanged: (value) => authProvider.priceViewChange(value),
           ),
           const SizedBox(height: 24),
-          RoundLgButton(
+          RoundButton(
             labelText: '変更内容を保存',
             labelColor: Colors.white,
             backgroundColor: Colors.blue.shade400,

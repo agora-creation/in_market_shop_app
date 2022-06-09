@@ -7,8 +7,8 @@ import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/screens/item_add.dart';
 import 'package:in_market_shop_app/screens/item_detail.dart';
+import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
-import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreen extends StatelessWidget {
@@ -17,8 +17,8 @@ class ItemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final itemProvider = Provider.of<ItemProvider>(context);
     ShopModel? shop = authProvider.shop;
+    final itemProvider = Provider.of<ItemProvider>(context);
     List<ShopItemModel> items = [];
 
     return Scaffold(
@@ -46,7 +46,7 @@ class ItemScreen extends StatelessWidget {
             }
           }
           if (items.isEmpty) {
-            return const NotListMessage(message: '商品を追加してください');
+            return const CenterText(label: '商品を追加してください');
           }
           return GridView.builder(
             shrinkWrap: true,

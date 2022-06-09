@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class NotListMessage extends StatelessWidget {
-  final String? message;
+class CenterText extends StatelessWidget {
+  final String? label;
 
-  const NotListMessage({this.message, Key? key}) : super(key: key);
+  const CenterText({this.label, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        message ?? '',
+        label ?? '',
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,

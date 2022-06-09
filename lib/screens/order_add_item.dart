@@ -5,8 +5,8 @@ import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/models/user.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
+import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
-import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
 class OrderAddItemScreen extends StatefulWidget {
@@ -49,7 +49,7 @@ class _OrderAddItemScreenState extends State<OrderAddItemScreen> {
             }
           }
           if (items.isEmpty) {
-            return const NotListMessage(message: '注文する商品がありません');
+            return const CenterText(label: '注文する商品がありません');
           }
           return GridView.builder(
             shrinkWrap: true,

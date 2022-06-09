@@ -49,6 +49,10 @@ class _Order0DetailScreenState extends State<Order0DetailScreen> {
                           '注文者: ${widget.order.userName}',
                           style: const TextStyle(fontSize: 16),
                         ),
+                        Text(
+                          '配達者: ${widget.order.deliveryName}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),

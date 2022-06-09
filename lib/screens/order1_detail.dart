@@ -6,7 +6,7 @@ import 'package:in_market_shop_app/providers/order.dart';
 import 'package:in_market_shop_app/widgets/cart_list.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
 import 'package:in_market_shop_app/widgets/label_column.dart';
-import 'package:in_market_shop_app/widgets/round_sm_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class Order1DetailScreen extends StatefulWidget {
@@ -76,11 +76,8 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
                     LabelColumn(
                       labelText: '注文商品',
                       children: cartList.map((cart) {
-                        var index = cartList.indexOf(cart);
-                        int befQuantity = widget.order.cartList[index].quantity;
                         return CartList(
                           cart: cart,
-                          befQuantity: befQuantity,
                           removeOnTap: () {
                             if (cart.quantity > 1) {
                               setState(() => cart.quantity -= 1);
@@ -96,15 +93,13 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        RoundSmButton(
-                          labelText: '配達待ちにする',
+                        RoundButton(
+                          labelText: 'キャンセルする',
                           labelColor: Colors.white,
-                          backgroundColor: Colors.blue.shade400,
+                          backgroundColor: Colors.red.shade400,
                           onPressed: () async {
-                            String? errorText = await orderProvider.update(
+                            String? errorText = await orderProvider.cancel(
                               order: widget.order,
-                              cartList: cartList,
-                              status: 2,
                             );
                             if (errorText != null) {
                               showDialog(
@@ -119,13 +114,15 @@ class _Order1DetailScreenState extends State<Order1DetailScreen> {
                             Navigator.pop(context);
                           },
                         ),
-                        RoundSmButton(
-                          labelText: 'キャンセルする',
+                        RoundButton(
+                          labelText: '配達待ちにする',
                           labelColor: Colors.white,
-                          backgroundColor: Colors.red.shade400,
+                          backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
-                            String? errorText = await orderProvider.cancel(
+                            String? errorText = await orderProvider.update(
                               order: widget.order,
+                              cartList: cartList,
+                              status: 2,
                             );
                             if (errorText != null) {
                               showDialog(

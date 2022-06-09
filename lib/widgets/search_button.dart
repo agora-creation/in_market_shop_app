@@ -18,7 +18,7 @@ class SearchButton extends StatelessWidget {
       onPressed: onPressed,
       style: TextButton.styleFrom(
         backgroundColor: Colors.lightBlue,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
       ),
       icon: Icon(iconData, color: Colors.white),
       label: Text(

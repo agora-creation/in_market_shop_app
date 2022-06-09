@@ -4,8 +4,8 @@ import 'package:in_market_shop_app/models/delivery.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/delivery.dart';
+import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
-import 'package:in_market_shop_app/widgets/not_list_message.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryScreen extends StatelessWidget {
@@ -43,7 +43,7 @@ class DeliveryScreen extends StatelessWidget {
             }
           }
           if (deliveryList.isEmpty) {
-            return const NotListMessage(message: '配達者がいません');
+            return const CenterText(label: '配達者がいません');
           }
           return GridView.builder(
             shrinkWrap: true,

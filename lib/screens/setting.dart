@@ -7,7 +7,7 @@ import 'package:in_market_shop_app/screens/setting_email.dart';
 import 'package:in_market_shop_app/screens/setting_name.dart';
 import 'package:in_market_shop_app/screens/setting_password.dart';
 import 'package:in_market_shop_app/screens/setting_shop.dart';
-import 'package:in_market_shop_app/widgets/round_lg_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:in_market_shop_app/widgets/tap_list_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +69,7 @@ class _SettingScreenState extends State<SettingScreen> {
             },
           ),
           const SizedBox(height: 24),
-          RoundLgButton(
+          RoundButton(
             labelText: 'ログアウト',
             labelColor: Colors.blue.shade400,
             borderColor: Colors.blue.shade400,

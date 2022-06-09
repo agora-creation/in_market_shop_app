@@ -3,7 +3,8 @@ import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
-import 'package:in_market_shop_app/widgets/round_sm_button.dart';
+import 'package:in_market_shop_app/widgets/round_button.dart';
+import 'package:in_market_shop_app/widgets/switch_list.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetailScreen extends StatefulWidget {
@@ -77,13 +78,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       iconData: Icons.description,
                     ),
                     const SizedBox(height: 8),
-                    SwitchListTile(
-                      tileColor: Colors.grey.shade200,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      title: const Text('商品情報を公開する'),
-                      secondary: const Icon(Icons.visibility),
+                    SwitchList(
+                      labelText: '商品情報を公開する',
                       value: itemProvider.openController,
                       onChanged: (value) => itemProvider.openChange(value),
                     ),
@@ -91,12 +87,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        RoundSmButton(
-                          labelText: '変更内容を保存する',
+                        RoundButton(
+                          labelText: '削除する',
                           labelColor: Colors.white,
-                          backgroundColor: Colors.blue.shade400,
+                          backgroundColor: Colors.red.shade400,
                           onPressed: () async {
-                            String? errorText = await itemProvider.update(
+                            String? errorText = await itemProvider.delete(
                               item: widget.item,
                             );
                             if (errorText != null) {
@@ -113,12 +109,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             Navigator.pop(context);
                           },
                         ),
-                        RoundSmButton(
-                          labelText: '削除する',
+                        RoundButton(
+                          labelText: '変更内容を保存する',
                           labelColor: Colors.white,
-                          backgroundColor: Colors.red.shade400,
+                          backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
-                            String? errorText = await itemProvider.delete(
+                            String? errorText = await itemProvider.update(
                               item: widget.item,
                             );
                             if (errorText != null) {
