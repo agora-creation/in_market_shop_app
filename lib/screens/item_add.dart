@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
+import 'package:in_market_shop_app/widgets/custom_text_button.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
 import 'package:in_market_shop_app/widgets/round_button.dart';
@@ -44,6 +45,14 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
+                    CustomTextButton(
+                      labelText: '画像取得',
+                      backgroundColor: Colors.blue,
+                      onPressed: () async {
+                        await itemProvider.imgFromGallery();
+                      },
+                    ),
+                    const SizedBox(height: 8),
                     CustomTextFormField2(
                       controller: itemProvider.numberController,
                       keyboardType: TextInputType.name,

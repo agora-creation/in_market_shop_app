@@ -81,6 +81,7 @@ class AuthProvider with ChangeNotifier {
           'password': passwordController.text.trim(),
           'name': nameController.text.trim(),
           'priceView': false,
+          'code': '',
           'token': '',
           'createdAt': DateTime.now(),
         });

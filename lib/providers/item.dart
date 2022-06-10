@@ -1,22 +1,54 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/services/shop_item.dart';
+import 'package:path/path.dart';
 
 class ItemProvider with ChangeNotifier {
   ShopItemService itemService = ShopItemService();
 
-  File? imageFile;
   TextEditingController numberController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController unitController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool openController = false;
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      _photo = File(pickedFile.path);
+      _uploadFile();
+    } else {
+      print('No image selected.');
+    }
+    notifyListeners();
+  }
+
+  Future _uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'item/$fileName';
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('item/');
+      await ref.putFile(_photo!);
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
   void clearController() {
     numberController.text = '';
@@ -34,12 +66,6 @@ class ItemProvider with ChangeNotifier {
     unitController.text = item.unit;
     descriptionController.text = item.description;
     openController = item.open;
-  }
-
-  Future pickImage() async {
-    ImagePicker imagePicker = ImagePicker();
-    final file = await imagePicker.pickImage(source: ImageSource.gallery);
-    imageFile = File(file!.path);
   }
 
   void openChange(bool value) {
@@ -76,9 +102,8 @@ class ItemProvider with ChangeNotifier {
     return errorText;
   }
 
-  Future<String?> update({ShopItemModel? item}) async {
+  Future<String?> update({required ShopItemModel item}) async {
     String? errorText;
-    if (item == null) errorText = '商品情報の更新に失敗しました。';
     if (numberController.text.isEmpty) errorText = '商品番号を入力してください。';
     if (nameController.text.isEmpty) errorText = '商品名を入力してください。';
     try {
@@ -87,7 +112,8 @@ class ItemProvider with ChangeNotifier {
         price = int.parse(priceController.text.trim());
       }
       itemService.update({
-        'id': item?.id,
+        'id': item.id,
+        'shopId': item.shopId,
         'number': numberController.text.trim(),
         'name': nameController.text.trim(),
         'price': price,
@@ -101,13 +127,12 @@ class ItemProvider with ChangeNotifier {
     return errorText;
   }
 
-  Future<String?> delete({ShopItemModel? item}) async {
+  Future<String?> delete({required ShopItemModel item}) async {
     String? errorText;
-    if (item == null) errorText = '商品の削除に失敗しました。';
     try {
       itemService.delete({
-        'id': item?.id,
-        'shopId': item?.shopId,
+        'id': item.id,
+        'shopId': item.shopId,
       });
     } catch (e) {
       errorText = '商品の削除に失敗しました。';
