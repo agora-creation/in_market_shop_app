@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               return DashboardCard(
                 crossAxisCellCount: 2,
+                mainAxisCellCount: 2,
                 iconData: Icons.shopping_cart,
                 labelText: '受注待ち',
                 count: orders.length,
@@ -93,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () => overlayScreen(context, const OrderAddScreen()),
           ),
           DashboardCard(
+            crossAxisCellCount: 3,
             iconData: Icons.bar_chart,
             labelText: '集計',
             onTap: () => overlayScreen(context, const TotalScreen()),
