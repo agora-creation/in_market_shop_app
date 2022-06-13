@@ -1,17 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart' as fbs;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
+import 'package:in_market_shop_app/widgets/custom_text_button.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
 import 'package:in_market_shop_app/widgets/error_dialog.dart';
 import 'package:in_market_shop_app/widgets/round_button.dart';
 import 'package:in_market_shop_app/widgets/switch_list.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class ItemAddScreen extends StatefulWidget {
@@ -22,30 +22,26 @@ class ItemAddScreen extends StatefulWidget {
 }
 
 class _ItemAddScreenState extends State<ItemAddScreen> {
-  fbs.FirebaseStorage storage = fbs.FirebaseStorage.instance;
-  File? _photo;
-  final ImagePicker _picker = ImagePicker();
+  File? pickedImage;
+  Uint8List webImage = Uint8List(8);
 
-  Future selectImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _photo = File(pickedFile.path);
-        uploadFile();
+  Future pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker picker = ImagePicker();
+      XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() => pickedImage = selected);
       }
-    });
-  }
-
-  Future uploadFile() async {
-    if (_photo == null) return;
-    final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
-    try {
-      final ref = fbs.FirebaseStorage.instance.ref(destination).child('file/');
-      await ref.putFile(_photo!);
-    } catch (e) {
-      if (kDebugMode) {
-        print('error occured');
+    } else if (kIsWeb) {
+      final ImagePicker picker = ImagePicker();
+      XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          pickedImage = File('a');
+        });
       }
     }
   }
@@ -78,37 +74,20 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          await selectImage();
-                        },
-                        child: CircleAvatar(
-                          radius: 55,
-                          backgroundColor: const Color(0xffFDCF09),
-                          child: _photo != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.file(
-                                    _photo!,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(50)),
-                                  width: 100,
-                                  height: 100,
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.grey[800],
-                                  ),
-                                ),
-                        ),
-                      ),
+                    pickedImage == null
+                        ? kIsWeb
+                            ? Image.memory(webImage, fit: BoxFit.fill)
+                            : Image.file(
+                                pickedImage!,
+                                fit: BoxFit.fill,
+                              )
+                        : Container(),
+                    CustomTextButton(
+                      labelText: '画像取得',
+                      backgroundColor: Colors.cyan,
+                      onPressed: () async {
+                        await pickImage();
+                      },
                     ),
                     const SizedBox(height: 8),
                     CustomTextFormField2(
