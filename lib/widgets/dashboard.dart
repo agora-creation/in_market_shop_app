@@ -14,7 +14,7 @@ class Dashboard extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       child: StaggeredGrid.count(
-        crossAxisCount: 4,
+        crossAxisCount: 5,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
         children: children ?? [],

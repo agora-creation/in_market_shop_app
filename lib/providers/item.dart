@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/services/shop_item.dart';
-import 'package:path/path.dart';
 
 class ItemProvider with ChangeNotifier {
   ShopItemService itemService = ShopItemService();
@@ -18,37 +13,6 @@ class ItemProvider with ChangeNotifier {
   TextEditingController unitController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool openController = false;
-
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-  File? _photo;
-  final ImagePicker _picker = ImagePicker();
-
-  Future imgFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      _photo = File(pickedFile.path);
-      _uploadFile();
-    } else {
-      print('No image selected.');
-    }
-    notifyListeners();
-  }
-
-  Future _uploadFile() async {
-    if (_photo == null) return;
-    final fileName = basename(_photo!.path);
-    final destination = 'item/$fileName';
-    try {
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref(destination)
-          .child('item/');
-      await ref.putFile(_photo!);
-    } catch (e) {
-      print('error occured');
-    }
-  }
 
   void clearController() {
     numberController.text = '';
