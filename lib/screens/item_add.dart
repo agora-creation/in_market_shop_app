@@ -1,9 +1,8 @@
-import 'dart:io';
+import 'dart:html';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
@@ -22,29 +21,8 @@ class ItemAddScreen extends StatefulWidget {
 }
 
 class _ItemAddScreenState extends State<ItemAddScreen> {
-  File? pickedImage;
-  Uint8List webImage = Uint8List(8);
-
-  Future pickImage() async {
-    if (!kIsWeb) {
-      final ImagePicker picker = ImagePicker();
-      XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        var selected = File(image.path);
-        setState(() => pickedImage = selected);
-      }
-    } else if (kIsWeb) {
-      final ImagePicker picker = ImagePicker();
-      XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        var f = await image.readAsBytes();
-        setState(() {
-          webImage = f;
-          pickedImage = File('a');
-        });
-      }
-    }
-  }
+  late File _cloudFile;
+  late var _fileBytes;
 
   @override
   Widget build(BuildContext context) {
@@ -74,19 +52,14 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    pickedImage == null
-                        ? kIsWeb
-                            ? Image.memory(webImage, fit: BoxFit.fill)
-                            : Image.file(
-                                pickedImage!,
-                                fit: BoxFit.fill,
-                              )
-                        : Container(),
+                    imageFile.isEmpty ? Image.memory(imageFile) : Container(),
                     CustomTextButton(
                       labelText: '画像取得',
                       backgroundColor: Colors.cyan,
                       onPressed: () async {
-                        await pickImage();
+                        final image = await ImagePickerWeb.getImageAsBytes();
+                        if (image == null) return;
+                        setState(() => imageFile = image);
                       },
                     ),
                     const SizedBox(height: 8),
