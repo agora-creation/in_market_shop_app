@@ -1,8 +1,8 @@
-import 'dart:html';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
 import 'package:in_market_shop_app/providers/item.dart';
@@ -21,8 +21,27 @@ class ItemAddScreen extends StatefulWidget {
 }
 
 class _ItemAddScreenState extends State<ItemAddScreen> {
-  late File _cloudFile;
-  late var _fileBytes;
+  String? imageUrl;
+
+  void _openPicker() async {
+    FilePickerResult? result;
+    result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowedExtensions: ['jpg', 'png'],
+    );
+    if (result == null) return;
+    Uint8List? uploadFile = result.files.single.bytes;
+    String fileName = result.files.single.name;
+    Reference reference =
+        FirebaseStorage.instance.ref().child('item').child(fileName);
+    final UploadTask uploadTask = reference.putData(uploadFile!);
+    uploadTask.whenComplete(() async {
+      String image = await uploadTask.snapshot.ref.getDownloadURL();
+      setState(() {
+        imageUrl = image;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +71,12 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    imageFile.isEmpty ? Image.memory(imageFile) : Container(),
+                    imageUrl != null ? Image.network(imageUrl!) : Container(),
+                    const SizedBox(height: 8),
                     CustomTextButton(
                       labelText: '画像取得',
                       backgroundColor: Colors.cyan,
-                      onPressed: () async {
-                        final image = await ImagePickerWeb.getImageAsBytes();
-                        if (image == null) return;
-                        setState(() => imageFile = image);
-                      },
+                      onPressed: _openPicker,
                     ),
                     const SizedBox(height: 8),
                     CustomTextFormField2(
