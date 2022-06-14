@@ -65,21 +65,20 @@ class ItemProvider with ChangeNotifier {
       Reference reference =
           FirebaseStorage.instance.ref().child('item').child(id);
       final UploadTask uploadTask = reference.putData(imageFile!);
-      String imageUrl = '';
       uploadTask.whenComplete(() async {
-        imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
-      });
-      itemService.create({
-        'id': id,
-        'shopId': shop?.id,
-        'number': numberController.text.trim(),
-        'name': nameController.text.trim(),
-        'price': price,
-        'unit': unitController.text.trim(),
-        'imageUrl': imageUrl,
-        'description': descriptionController.text,
-        'open': openController,
-        'createdAt': DateTime.now(),
+        String imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+        itemService.create({
+          'id': id,
+          'shopId': shop?.id,
+          'number': numberController.text.trim(),
+          'name': nameController.text.trim(),
+          'price': price,
+          'unit': unitController.text.trim(),
+          'imageUrl': imageUrl,
+          'description': descriptionController.text,
+          'open': openController,
+          'createdAt': DateTime.now(),
+        });
       });
     } catch (e) {
       errorText = '商品の追加に失敗しました。';
