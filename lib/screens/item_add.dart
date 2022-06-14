@@ -1,7 +1,3 @@
-import 'dart:typed_data';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/providers/auth.dart';
@@ -21,28 +17,6 @@ class ItemAddScreen extends StatefulWidget {
 }
 
 class _ItemAddScreenState extends State<ItemAddScreen> {
-  String? imageUrl;
-
-  void _openPicker() async {
-    FilePickerResult? result;
-    result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowedExtensions: ['jpg', 'png'],
-    );
-    if (result == null) return;
-    Uint8List? uploadFile = result.files.single.bytes;
-    String fileName = result.files.single.name;
-    Reference reference =
-        FirebaseStorage.instance.ref().child('item').child(fileName);
-    final UploadTask uploadTask = reference.putData(uploadFile!);
-    uploadTask.whenComplete(() async {
-      String image = await uploadTask.snapshot.ref.getDownloadURL();
-      setState(() {
-        imageUrl = image;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -71,12 +45,19 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    imageUrl != null ? Image.network(imageUrl!) : Container(),
+                    itemProvider.imageFile != null
+                        ? Image.memory(
+                            itemProvider.imageFile!,
+                            fit: BoxFit.fill,
+                          )
+                        : Container(),
                     const SizedBox(height: 8),
                     CustomTextButton(
                       labelText: '画像取得',
                       backgroundColor: Colors.cyan,
-                      onPressed: _openPicker,
+                      onPressed: () async {
+                        await itemProvider.imagePicker();
+                      },
                     ),
                     const SizedBox(height: 8),
                     CustomTextFormField2(

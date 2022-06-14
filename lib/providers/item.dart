@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:in_market_shop_app/models/shop.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
@@ -12,6 +16,7 @@ class ItemProvider with ChangeNotifier {
   TextEditingController priceController = TextEditingController();
   TextEditingController unitController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  Uint8List? imageFile;
   bool openController = false;
 
   void clearController() {
@@ -20,6 +25,7 @@ class ItemProvider with ChangeNotifier {
     priceController.text = '';
     unitController.text = '';
     descriptionController.text = '';
+    imageFile = null;
     openController = false;
   }
 
@@ -37,6 +43,14 @@ class ItemProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future imagePicker() async {
+    FilePickerResult? result;
+    result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result == null) return;
+    imageFile = result.files.single.bytes;
+    notifyListeners();
+  }
+
   Future<String?> create({ShopModel? shop}) async {
     String? errorText;
     if (shop == null) errorText = '商品の追加に失敗しました。';
@@ -48,6 +62,13 @@ class ItemProvider with ChangeNotifier {
       if (priceController.text.isNotEmpty) {
         price = int.parse(priceController.text.trim());
       }
+      Reference reference =
+          FirebaseStorage.instance.ref().child('item').child(id);
+      final UploadTask uploadTask = reference.putData(imageFile!);
+      String imageUrl = '';
+      uploadTask.whenComplete(() async {
+        imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+      });
       itemService.create({
         'id': id,
         'shopId': shop?.id,
@@ -55,7 +76,7 @@ class ItemProvider with ChangeNotifier {
         'name': nameController.text.trim(),
         'price': price,
         'unit': unitController.text.trim(),
-        'imageUrl': '',
+        'imageUrl': imageUrl,
         'description': descriptionController.text,
         'open': openController,
         'createdAt': DateTime.now(),
