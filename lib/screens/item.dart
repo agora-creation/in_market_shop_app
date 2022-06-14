@@ -60,6 +60,7 @@ class ItemScreen extends StatelessWidget {
             itemBuilder: (_, index) {
               ShopItemModel item = items[index];
               return ImageCard(
+                image: item.imageUrl,
                 title: item.name,
                 subTitle: '¥ ${item.price}',
                 onTap: () {
