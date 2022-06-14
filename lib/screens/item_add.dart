@@ -124,7 +124,6 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                               );
                               return;
                             }
-                            itemProvider.clearController();
                             if (!mounted) return;
                             Navigator.pop(context);
                           },

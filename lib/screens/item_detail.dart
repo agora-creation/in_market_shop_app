@@ -104,7 +104,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                               );
                               return;
                             }
-                            itemProvider.clearController();
                             if (!mounted) return;
                             Navigator.pop(context);
                           },
@@ -126,7 +125,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                               );
                               return;
                             }
-                            itemProvider.clearController();
                             if (!mounted) return;
                             Navigator.pop(context);
                           },
