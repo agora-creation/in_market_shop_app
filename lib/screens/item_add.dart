@@ -46,9 +46,12 @@ class _ItemAddScreenState extends State<ItemAddScreen> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     itemProvider.imageFile != null
-                        ? Image.memory(
-                            itemProvider.imageFile!,
-                            fit: BoxFit.fill,
+                        ? SizedBox(
+                            width: 300,
+                            child: Image.memory(
+                              itemProvider.imageFile!,
+                              fit: BoxFit.fill,
+                            ),
                           )
                         : Container(),
                     const SizedBox(height: 8),
