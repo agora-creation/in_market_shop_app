@@ -62,6 +62,7 @@ class _UserScreenState extends State<UserScreen> {
             itemBuilder: (_, index) {
               UserModel user = users[index];
               return ImageCard(
+                image: user.imageUrl,
                 title: user.name,
                 onTap: () {},
               );

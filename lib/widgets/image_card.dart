@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/style.dart';
 
 class ImageCard extends StatelessWidget {
-  final String? image;
-  final String? title;
+  final String image;
+  final String title;
   final String? subTitle;
   final Function()? onTap;
 
   const ImageCard({
-    this.image,
-    this.title,
+    required this.image,
+    required this.title,
     this.subTitle,
     this.onTap,
     Key? key,
@@ -26,13 +27,13 @@ class ImageCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 20 / 13,
-              child: image != null
+              child: image != ''
                   ? Image.network(
-                      image!,
+                      image,
                       fit: BoxFit.fitWidth,
                     )
                   : Image.asset(
-                      'assets/images/no_image.png',
+                      noImagePath,
                       fit: BoxFit.fitWidth,
                     ),
             ),
@@ -47,11 +48,12 @@ class ImageCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title ?? '',
+                      title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'SourceHanSans-Bold',
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     subTitle != null ? const SizedBox(height: 4) : Container(),

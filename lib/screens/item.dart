@@ -52,7 +52,7 @@ class ItemScreen extends StatelessWidget {
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
+              crossAxisCount: 6,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
             ),
@@ -62,7 +62,7 @@ class ItemScreen extends StatelessWidget {
               return ImageCard(
                 image: item.imageUrl,
                 title: item.name,
-                subTitle: '¥ ${item.price}',
+                subTitle: '¥ ${item.price} / ${item.unit}',
                 onTap: () {
                   itemProvider.setController(item);
                   nextScreen(context, ItemDetailScreen(item: item));

@@ -57,6 +57,7 @@ class DeliveryScreen extends StatelessWidget {
             itemBuilder: (_, index) {
               DeliveryModel delivery = deliveryList[index];
               return ImageCard(
+                image: delivery.imageUrl,
                 title: delivery.name,
                 onTap: () {},
               );

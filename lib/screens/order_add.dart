@@ -64,6 +64,7 @@ class _OrderAddScreenState extends State<OrderAddScreen> {
             itemBuilder: (_, index) {
               UserModel user = users[index];
               return ImageCard(
+                image: user.imageUrl,
                 title: user.name,
                 onTap: () => nextScreen(
                   context,

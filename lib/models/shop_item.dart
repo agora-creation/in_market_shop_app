@@ -10,6 +10,7 @@ class ShopItemModel {
   String _imageUrl = '';
   String _description = '';
   bool _open = false;
+  int _sort = 0;
   DateTime _createdAt = DateTime.now();
 
   String get id => _id;
@@ -21,6 +22,7 @@ class ShopItemModel {
   String get imageUrl => _imageUrl;
   String get description => _description;
   bool get open => _open;
+  int get sort => _sort;
   DateTime get createdAt => _createdAt;
 
   ShopItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -33,6 +35,7 @@ class ShopItemModel {
     _imageUrl = snapshot.data()!['imageUrl'] ?? '';
     _description = snapshot.data()!['description'] ?? '';
     _open = snapshot.data()!['open'] ?? false;
+    _sort = snapshot.data()!['sort'] ?? 0;
     _createdAt = snapshot.data()!['createdAt'].toDate() ?? DateTime.now();
   }
 }
