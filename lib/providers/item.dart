@@ -114,20 +114,46 @@ class ItemProvider with ChangeNotifier {
     if (numberController.text.isEmpty) errorText = '商品番号を入力してください。';
     if (nameController.text.isEmpty) errorText = '商品名を入力してください。';
     try {
+      String number = numberController.text.trim();
+      String name = nameController.text.trim();
       int price = 0;
       if (priceController.text.isNotEmpty) {
         price = int.parse(priceController.text.trim());
       }
-      itemService.update({
-        'id': item.id,
-        'shopId': item.shopId,
-        'number': numberController.text.trim(),
-        'name': nameController.text.trim(),
-        'price': price,
-        'unit': unitController.text.trim(),
-        'description': descriptionController.text,
-        'open': openController,
-      });
+      String unit = unitController.text.trim();
+      String description = descriptionController.text;
+      bool open = openController;
+      if (imageFile != null) {
+        Reference reference =
+            FirebaseStorage.instance.ref().child('item').child(item.id);
+        final UploadTask uploadTask = reference.putData(imageFile!);
+        uploadTask.whenComplete(() async {
+          String imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+          itemService.update({
+            'id': item.id,
+            'shopId': item.shopId,
+            'number': number,
+            'name': name,
+            'price': price,
+            'unit': unit,
+            'imageUrl': imageUrl,
+            'description': description,
+            'open': open,
+          });
+        });
+      } else {
+        itemService.update({
+          'id': item.id,
+          'shopId': item.shopId,
+          'number': number,
+          'name': name,
+          'price': price,
+          'unit': unit,
+          'description': description,
+          'open': open,
+        });
+      }
+      clearController();
     } catch (e) {
       errorText = '商品情報の更新に失敗しました。';
     }
