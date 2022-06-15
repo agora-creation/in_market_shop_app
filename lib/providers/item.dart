@@ -58,28 +58,51 @@ class ItemProvider with ChangeNotifier {
     if (nameController.text.isEmpty) errorText = '商品名を入力してください。';
     try {
       String id = itemService.newId(shop?.id);
+      String? shopId = shop?.id;
+      String number = numberController.text.trim();
+      String name = nameController.text.trim();
       int price = 0;
       if (priceController.text.isNotEmpty) {
         price = int.parse(priceController.text.trim());
       }
-      Reference reference =
-          FirebaseStorage.instance.ref().child('item').child(id);
-      final UploadTask uploadTask = reference.putData(imageFile!);
-      uploadTask.whenComplete(() async {
-        String imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+      String unit = unitController.text.trim();
+      String imageUrl = '';
+      String description = descriptionController.text;
+      bool open = openController;
+      if (imageFile != null) {
+        Reference reference =
+            FirebaseStorage.instance.ref().child('item').child(id);
+        final UploadTask uploadTask = reference.putData(imageFile!);
+        uploadTask.whenComplete(() async {
+          imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+          itemService.create({
+            'id': id,
+            'shopId': shopId,
+            'number': number,
+            'name': name,
+            'price': price,
+            'unit': unit,
+            'imageUrl': imageUrl,
+            'description': description,
+            'open': open,
+            'createdAt': DateTime.now(),
+          });
+        });
+      } else {
         itemService.create({
           'id': id,
-          'shopId': shop?.id,
-          'number': numberController.text.trim(),
-          'name': nameController.text.trim(),
+          'shopId': shopId,
+          'number': number,
+          'name': name,
           'price': price,
-          'unit': unitController.text.trim(),
+          'unit': unit,
           'imageUrl': imageUrl,
-          'description': descriptionController.text,
-          'open': openController,
+          'description': description,
+          'open': open,
           'createdAt': DateTime.now(),
         });
-      });
+      }
+      clearController();
     } catch (e) {
       errorText = '商品の追加に失敗しました。';
     }

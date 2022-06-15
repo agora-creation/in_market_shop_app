@@ -26,10 +26,15 @@ class ImageCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 20 / 13,
-              child: Image.network(
-                image ?? 'https://placehold.jp/300x200.png',
-                fit: BoxFit.fitWidth,
-              ),
+              child: image != null
+                  ? Image.network(
+                      image!,
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Image.asset(
+                      'assets/images/no_image.png',
+                      fit: BoxFit.fitWidth,
+                    ),
             ),
             Expanded(
               child: Padding(

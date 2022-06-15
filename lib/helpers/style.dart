@@ -40,3 +40,5 @@ const BoxDecoration kBottomBorder = BoxDecoration(
     bottom: BorderSide(color: Color(0xFFBDBDBD)),
   ),
 );
+
+const String noImagePath = 'assets/images/no_image.png';

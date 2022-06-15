@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_market_shop_app/helpers/style.dart';
 import 'package:in_market_shop_app/models/shop_item.dart';
 import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/widgets/custom_text_form_field2.dart';
@@ -43,6 +44,35 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            await itemProvider.imagePicker();
+                          },
+                          child: SizedBox(
+                            width: 300,
+                            height: 200,
+                            child: itemProvider.imageFile != null
+                                ? Image.memory(
+                                    itemProvider.imageFile!,
+                                    fit: BoxFit.fitWidth,
+                                  )
+                                : widget.item.imageUrl != ''
+                                    ? Image.network(
+                                        widget.item.imageUrl,
+                                        fit: BoxFit.fitWidth,
+                                      )
+                                    : Image.asset(
+                                        noImagePath,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                     CustomTextFormField2(
                       controller: itemProvider.numberController,
                       keyboardType: TextInputType.name,
@@ -88,6 +118,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         RoundButton(
+                          labelText: '一覧に戻る',
+                          labelColor: Colors.white,
+                          backgroundColor: Colors.grey,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        RoundButton(
                           labelText: '削除する',
                           labelColor: Colors.white,
                           backgroundColor: Colors.red.shade400,
@@ -109,7 +145,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           },
                         ),
                         RoundButton(
-                          labelText: '変更内容を保存する',
+                          labelText: '変更内容を保存',
                           labelColor: Colors.white,
                           backgroundColor: Colors.blue.shade400,
                           onPressed: () async {
