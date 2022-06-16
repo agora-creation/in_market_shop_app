@@ -6,27 +6,29 @@ class ImageCard extends StatelessWidget {
   final String title;
   final String? subTitle;
   final Function()? onTap;
+  final Widget? child;
 
   const ImageCard({
     required this.image,
     required this.title,
     this.subTitle,
     this.onTap,
+    this.child,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 3,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 20 / 13,
+    return Card(
+      elevation: 3,
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: AspectRatio(
+              aspectRatio: 20 / 12,
               child: image != ''
                   ? Image.network(
                       image,
@@ -37,43 +39,42 @@ class ImageCard extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                     ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SourceHanSans-Bold',
-                        overflow: TextOverflow.ellipsis,
-                      ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSans-Bold',
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    subTitle != null ? const SizedBox(height: 4) : Container(),
-                    subTitle != null
-                        ? Text(
-                            subTitle ?? '',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'SourceHanSans-Bold',
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
+                  ),
+                  subTitle != null ? const SizedBox(height: 4) : Container(),
+                  subTitle != null
+                      ? Text(
+                          subTitle ?? '',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SourceHanSans-Bold',
+                          ),
+                        )
+                      : Container(),
+                  child != null ? const SizedBox(height: 8) : Container(),
+                  child ?? Container(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

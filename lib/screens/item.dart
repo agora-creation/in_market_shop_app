@@ -9,6 +9,7 @@ import 'package:in_market_shop_app/screens/item_add.dart';
 import 'package:in_market_shop_app/screens/item_detail.dart';
 import 'package:in_market_shop_app/widgets/center_text.dart';
 import 'package:in_market_shop_app/widgets/image_card.dart';
+import 'package:in_market_shop_app/widgets/toggle_sm_button.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreen extends StatelessWidget {
@@ -67,6 +68,15 @@ class ItemScreen extends StatelessWidget {
                   itemProvider.setController(item);
                   nextScreen(context, ItemDetailScreen(item: item));
                 },
+                child: ToggleSmButton(
+                  labelText: '表示順: ${item.sort}',
+                  removeOnTap: () async {
+                    await itemProvider.updateSort(item: item, remove: true);
+                  },
+                  addOnTap: () async {
+                    await itemProvider.updateSort(item: item);
+                  },
+                ),
               );
             },
           );

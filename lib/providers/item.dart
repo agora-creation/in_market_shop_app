@@ -160,6 +160,23 @@ class ItemProvider with ChangeNotifier {
     return errorText;
   }
 
+  Future updateSort({required ShopItemModel item, bool remove = false}) async {
+    int sort = item.sort;
+    if (remove == true) {
+      if (sort > 0) {
+        sort -= 1;
+      }
+    } else {
+      sort += 1;
+    }
+    itemService.update({
+      'id': item.id,
+      'shopId': item.shopId,
+      'sort': sort,
+    });
+    notifyListeners();
+  }
+
   Future<String?> delete({required ShopItemModel item}) async {
     String? errorText;
     try {
@@ -179,7 +196,7 @@ class ItemProvider with ChangeNotifier {
         .collection('shop')
         .doc(shop?.id ?? 'error')
         .collection('item')
-        .orderBy('createdAt', descending: true)
+        .orderBy('sort', descending: false)
         .snapshots();
     return ret;
   }
