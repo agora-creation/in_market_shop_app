@@ -8,7 +8,7 @@ import 'package:in_market_shop_app/providers/item.dart';
 import 'package:in_market_shop_app/screens/item_add.dart';
 import 'package:in_market_shop_app/screens/item_detail.dart';
 import 'package:in_market_shop_app/widgets/center_text.dart';
-import 'package:in_market_shop_app/widgets/image_card.dart';
+import 'package:in_market_shop_app/widgets/image_card2.dart';
 import 'package:in_market_shop_app/widgets/toggle_sm_button.dart';
 import 'package:provider/provider.dart';
 
@@ -53,15 +53,15 @@ class ItemScreen extends StatelessWidget {
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6,
+              crossAxisCount: 5,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
             ),
             itemCount: items.length,
             itemBuilder: (_, index) {
               ShopItemModel item = items[index];
-              return ImageCard(
-                image: item.imageUrl,
+              return ImageCard2(
+                imageUrl: item.imageUrl,
                 title: item.name,
                 subTitle: '¥ ${item.price} / ${item.unit}',
                 onTap: () {
