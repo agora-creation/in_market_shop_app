@@ -85,6 +85,7 @@ class ItemProvider with ChangeNotifier {
             'imageUrl': imageUrl,
             'description': description,
             'open': open,
+            'sort': 0,
             'createdAt': DateTime.now(),
           });
         });
@@ -99,6 +100,7 @@ class ItemProvider with ChangeNotifier {
           'imageUrl': imageUrl,
           'description': description,
           'open': open,
+          'sort': 0,
           'createdAt': DateTime.now(),
         });
       }
